@@ -1,18 +1,49 @@
 package view;
 
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+public class HomeDesign {
 
-import view.abstractView.View;
+	private JFrame frame;
 
-public class Home extends View{
-	public Home(String playerID, final JFrame frame) {
-		super(playerID, frame);
+	/**
+	 * Launch the application.
+	 */
+	public static void main(final String playerID) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					HomeDesign window = new HomeDesign(playerID);
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public HomeDesign(String playerID) {
+		initialize(playerID);
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize(String playerID) {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 904, 767);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
 		JLabel lblPlayerID = new JLabel("PlayerID: "+ playerID);
 		lblPlayerID.setFont(new Font("Times New Roman", Font.PLAIN, 30));
@@ -45,14 +76,10 @@ public class Home extends View{
 		btnExitGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.dispose();
 			}
 		});
 		btnExitGame.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		btnExitGame.setBounds(253, 352, 235, 76);
 		frame.getContentPane().add(btnExitGame);
-		
-		
 	}
-
 }
