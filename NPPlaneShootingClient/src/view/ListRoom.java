@@ -8,11 +8,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import model.RoomList;
 import view.abstractView.View;
 
 public class ListRoom extends View{
 
-	public ListRoom(String playerID, final JFrame frame) {
+	public ListRoom(String playerID, final JFrame frame,RoomList roomList) {
 		super(playerID, frame);
 		// TODO Auto-generated constructor stub
 		
@@ -22,6 +23,10 @@ public class ListRoom extends View{
 		frame.getContentPane().add(lblPlayerID);
 		
 		
+		JLabel lblRoomList = new JLabel("Room List: "+roomList.get(0).getRoomID());
+		lblRoomList.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		lblRoomList.setBounds(141, 147, 395, 74);
+		frame.getContentPane().add(lblRoomList);
 		
 		JButton btnExitGame = new JButton("Exit game");
 		btnExitGame.addMouseListener(new MouseAdapter() {

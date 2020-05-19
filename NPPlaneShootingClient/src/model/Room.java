@@ -1,6 +1,7 @@
 package model;
+import java.io.Serializable;
 import java.util.List;
-public class Room {
+public class Room  implements Serializable{
 	String roomID;
 	Player hostPlayer;
 	List<Player> playerList;

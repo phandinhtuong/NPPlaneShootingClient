@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
@@ -15,7 +16,7 @@ import controller.Controller;
 import view.abstractView.View;
 
 public class Home extends View{
-	public Home(final BufferedReader inFromServer,final DataOutputStream outToServer,final String playerID, final JFrame frame) {
+	public Home(final DataInputStream inFromServer,final DataOutputStream outToServer,final String playerID, final JFrame frame) {
 		super(playerID, frame);
 		
 		JLabel lblPlayerID = new JLabel("PlayerID: "+ playerID);
@@ -43,7 +44,12 @@ public class Home extends View{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Controller controller = new Controller();
-				controller.listRoom(inFromServer, outToServer, frame, playerID);
+				try {
+					controller.listRoom(inFromServer, outToServer, frame, playerID);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});

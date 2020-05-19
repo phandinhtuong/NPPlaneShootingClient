@@ -60,6 +60,11 @@ public class ListRoomDesign {
 		button.setBounds(718, 24, 164, 62);
 		frame.getContentPane().add(button);
 		
+		JLabel lblRoomList = new JLabel("Room List: ");
+		lblRoomList.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		lblRoomList.setBounds(141, 147, 395, 74);
+		frame.getContentPane().add(lblRoomList);
+		
 		
 	}
 
