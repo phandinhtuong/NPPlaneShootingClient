@@ -8,6 +8,7 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		frame.setVisible(true);
+		frame.getContentPane().removeAll();
+		frame.setVisible(false);
 	}
 }
