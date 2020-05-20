@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class NewRoomCreatedDesign {
+public class CreateNewRoomDesign {
 
 	private JFrame frame;
 
@@ -20,7 +20,7 @@ public class NewRoomCreatedDesign {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewRoomCreatedDesign window = new NewRoomCreatedDesign();
+					CreateNewRoomDesign window = new CreateNewRoomDesign();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,7 +32,7 @@ public class NewRoomCreatedDesign {
 	/**
 	 * Create the application.
 	 */
-	public NewRoomCreatedDesign() {
+	public CreateNewRoomDesign() {
 		initialize();
 	}
 

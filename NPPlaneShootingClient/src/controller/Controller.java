@@ -1,23 +1,22 @@
 package controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 
-import objectByteTransform.Deserialize;
+import model.Player;
 import model.Room;
 import model.RoomList;
+import objectByteTransform.Deserialize;
+import objectByteTransform.Serialize;
 import view.Home;
+import view.JoinRoom;
 import view.ListRoom;
-import view.NewRoomCreated;
+import view.CreateNewRoom;
 
 public class Controller {
 	private static JFrame frame;
@@ -40,7 +39,8 @@ public class Controller {
 			fromServer = inFromServer.readLine();
 			//System.out.println("FROM SERVER: " + fromServer);
 			frame = new JFrame();
-			Home home = new Home(inFromServer,outToServer,fromServer, frame);
+			Player player = new Player(fromServer);
+			Home home = new Home(inFromServer,outToServer,player, frame);
 			//home.displayHome(fromServer, frame);
 			//clientSocket.close();
 		} catch (IOException e) {
@@ -49,7 +49,7 @@ public class Controller {
 		}
 		
 	}
-	public void createRoom(DataInputStream inFromServer,DataOutputStream outToServer, JFrame frame,String playerID){
+	public void createRoom(DataInputStream inFromServer,DataOutputStream outToServer, JFrame frame,Player player) throws ClassNotFoundException{
 		
 		try{
 			//clientSocket = new Socket(ip,port);
@@ -57,7 +57,8 @@ public class Controller {
 			outToServer.writeBytes("r\n");
 			while((fromServer = inFromServer.readLine())!=null){
 				System.out.println(fromServer);
-				NewRoomCreated newRoom = new NewRoomCreated(playerID, frame, fromServer);
+				Room room = new Room(fromServer,player);
+				CreateNewRoom newRoom = new CreateNewRoom(inFromServer,outToServer,player, frame, room);
 				break;
 			}
 			
@@ -65,7 +66,7 @@ public class Controller {
 			System.out.println(e.getMessage());
 		}
 	}
-	public void listRoom(DataInputStream inFromServer,DataOutputStream outToServer, JFrame frame,String playerID) throws ClassNotFoundException{
+	public void listRoom(DataInputStream inFromServer,DataOutputStream outToServer, JFrame frame,Player player) throws ClassNotFoundException{
 		
 			try {
 				outToServer.writeBytes("l\n");
@@ -87,14 +88,41 @@ public class Controller {
 			inFromServer.read(byteInFromServer);
 				break;
 			}
-			System.out.println(Arrays.toString(byteInFromServer));
+			//System.out.println(Arrays.toString(byteInFromServer));
 			roomList = Deserialize.deserializeRoomList(byteInFromServer);
-			System.out.println(roomList.get(0).getRoomID());
-			ListRoom listRoom = new ListRoom(playerID, frame, roomList);
+//			for(i=0;i<roomList.size();i++){
+//					System.out.println(Integer.toString(i));
+//				System.out.println(roomList.get(i).getRoomID());
+//			}
+			//System.out.println(roomList.get(0).getRoomID());
+			ListRoom listRoom = new ListRoom(inFromServer,outToServer,player, frame, roomList);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		
+	}
+	public void joinRoom(DataInputStream inFromServer,DataOutputStream outToServer,Player player,String roomID,JFrame frame) throws ClassNotFoundException, IOException{
+		Room room = updatePlayerInRoom(inFromServer, outToServer, player,roomID);
+		JoinRoom joinRoom = new JoinRoom(inFromServer, outToServer, player, frame, room);
+	}
+	public Room updatePlayerInRoom(DataInputStream inFromServer,DataOutputStream outToServer,Player player,String roomID) throws IOException, ClassNotFoundException{
+		
+		
+		outToServer.writeBytes(roomID+'\n');
+		
+		
+		byte[] playerInByte = Serialize.serialize(player);
+		outToServer.writeInt(playerInByte.length);
+		outToServer.write(playerInByte);
+		int i =0;
+		byte[] byteInFromServer = null;
+		while((i=inFromServer.readInt())!=0){
+			byteInFromServer = new byte[i];
+			inFromServer.read(byteInFromServer);
+			break;
+		}
+		Room room = Deserialize.deserializeRoom(byteInFromServer);
+		return room;
 	}
 }

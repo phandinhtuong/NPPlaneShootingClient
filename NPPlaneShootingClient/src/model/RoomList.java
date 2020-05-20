@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class RoomList implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	List<Room> roomList = new ArrayList<Room>();
 
 	public Room get(int arg0) {
@@ -27,6 +31,10 @@ public class RoomList implements Serializable{
 
 	public void forEach(Consumer<? super Room> arg0) {
 		roomList.forEach(arg0);
+	}
+
+	public int size() {
+		return roomList.size();
 	}
 	
 }

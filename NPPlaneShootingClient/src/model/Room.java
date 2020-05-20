@@ -2,6 +2,10 @@ package model;
 import java.io.Serializable;
 import java.util.List;
 public class Room  implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String roomID;
 	Player hostPlayer;
 	List<Player> playerList;
