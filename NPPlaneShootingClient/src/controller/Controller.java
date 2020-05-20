@@ -23,32 +23,7 @@ public class Controller {
 	static String ip = "127.0.0.1";
 	static int port = 6789;
 	static String fromServer;
-	public static void main(String[] args) throws ClassNotFoundException {
-		
-		Socket clientSocket;
-		try {
-			clientSocket = new Socket(ip, port);
-			DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
-			DataOutputStream outToServer = new DataOutputStream(
-					clientSocket.getOutputStream());
-			outToServer.writeBytes("c\n");
-			
-//			byte[] byteFromServer = null;
-//			inFromServer.readFully(byteFromServer);
-//			fromServer = Deserialize.deserializeString(byteFromServer);
-			fromServer = inFromServer.readLine();
-			//System.out.println("FROM SERVER: " + fromServer);
-			frame = new JFrame();
-			Player player = new Player(fromServer);
-			Home home = new Home(inFromServer,outToServer,player, frame);
-			//home.displayHome(fromServer, frame);
-			//clientSocket.close();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			//e.printStackTrace();
-		}
-		
-	}
+	
 	public void createRoom(DataInputStream inFromServer,DataOutputStream outToServer, JFrame frame,Player player) throws ClassNotFoundException{
 		
 		try{
@@ -103,6 +78,7 @@ public class Controller {
 		
 	}
 	public void joinRoom(DataInputStream inFromServer,DataOutputStream outToServer,Player player,String roomID,JFrame frame) throws ClassNotFoundException, IOException{
+		outToServer.writeBytes("j\n");
 		Room room = updatePlayerInRoom(inFromServer, outToServer, player,roomID);
 		JoinRoom joinRoom = new JoinRoom(inFromServer, outToServer, player, frame, room);
 	}

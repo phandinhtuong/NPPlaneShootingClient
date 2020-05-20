@@ -39,7 +39,7 @@ public class JoinRoom extends View{
 		
 		
 		//TODO update continuously???
-		room = controller.updatePlayerInRoom(inFromServer, outToServer, player,room.getRoomID());
+		//room = controller.updatePlayerInRoom(inFromServer, outToServer, player,room.getRoomID());
 		data = new String[room.getPlayerList().size()][3];
 		for(i=0;i<room.getPlayerList().size();i++){
 			data[i][0] = Integer.toString(i);
