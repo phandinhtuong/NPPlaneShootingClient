@@ -1,20 +1,29 @@
 package testOneClient;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
+
+import java.awt.Font;
+
+import javax.swing.SwingConstants;
+
+import java.awt.Component;
 
 public class TestOneObjectMoving {
 
@@ -53,26 +62,29 @@ public class TestOneObjectMoving {
 	JLabel enemyPlaneList[] = new JLabel[numberOfEnemyPlane];
 	Image missileImage = new ImageIcon(this.getClass().getResource(
 			"/missile.png")).getImage();
-
+	Image planeImage = new ImageIcon(this.getClass().getResource(
+			"/plane1.png")).getImage();
+	Image enemyImage = new ImageIcon(this.getClass().getResource(
+			"/enemyPlaneGraySmaller.png")).getImage();
+	JLabel lblYouDie = new JLabel("You die!");
 	private void initialize() throws IOException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
-
+		frame.setTitle("Plane shooting gaem");
 		frame.setBounds(0, 0, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		frame.setCursor(frame.getToolkit().createCustomCursor( new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+	            "null"));
 		final JLabel plane = new JLabel("");
-		Image planeImage = new ImageIcon(this.getClass().getResource(
-				"/plane1.png")).getImage();
+		
 		plane.setIcon(new ImageIcon(planeImage));
 		plane.setBounds(frame.getWidth() / 2 - planeImage.getWidth(null) / 2,
 				frame.getHeight() - planeImage.getHeight(null) * 2,
 				planeImage.getWidth(null), planeImage.getHeight(null));
 		frame.getContentPane().add(plane);
 
-		final Image enemyImage = new ImageIcon(this.getClass().getResource(
-				"/enemyPlaneGraySmaller.png")).getImage();
+		
 
 		// for (int i =0;i<5;i++){
 		//
@@ -85,7 +97,16 @@ public class TestOneObjectMoving {
 		// }
 
 		createEnemyPlanes(enemyImage, plane);
-
+		
+		
+		lblYouDie.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblYouDie.setForeground(Color.RED);
+		lblYouDie.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblYouDie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYouDie.setFont(new Font("Times New Roman", Font.BOLD, 99));
+		lblYouDie.setBounds(frame.getWidth()/2-200, frame.getHeight()/2-100, 400, 200);
+		frame.getContentPane().add(lblYouDie);
+		lblYouDie.setVisible(false);
 		// final JLabel missile = new JLabel("");
 
 		// missile.setIcon(new ImageIcon(img2));
@@ -258,7 +279,6 @@ public class TestOneObjectMoving {
 					// speed by
 					// y and
 					// delay
-					// System.out.println("enemy plane index "+index+" visibility is "+enemyPlane.isVisible());
 					if (plane.isVisible()) {
 						if (checkCollision(x, enemyPlaneY,
 								enemyPlaneList[index].getWidth(),
@@ -266,9 +286,8 @@ public class TestOneObjectMoving {
 
 							plane.setVisible(false);
 							frame.getContentPane().remove(plane);
-							// plane.disable();
-							// frame.getContentPane().remove(enemyPlane);
-
+							lblYouDie.setVisible(true);
+							frame.setCursor(Cursor.DEFAULT_CURSOR);
 							System.out.println("you ded by enemy plane index "
 									+ index);
 
@@ -292,5 +311,4 @@ public class TestOneObjectMoving {
 		Timer t = new Timer(delay, taskPerformer);
 		t.start();
 	}
-
 }
