@@ -29,6 +29,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TestOnePlayerConnectToServer {
 
@@ -87,7 +89,8 @@ public class TestOnePlayerConnectToServer {
 	EnemyModel enemyModel = new EnemyModel(0,0,0,"ready");
 	@SuppressWarnings("resource")
 	private void initialize() throws UnknownHostException, IOException {
-		String ip = "127.0.0.1";
+//		String ip = "127.0.0.1";
+		String ip = "192.168.31.153";
 		int port = 6789;
 
 		Socket clientSocket;
@@ -99,6 +102,8 @@ public class TestOnePlayerConnectToServer {
 				clientSocket.getOutputStream());
 
 		frame = new JFrame();
+		
+		
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setTitle("Plane shooting gaem");
 		frame.setBounds(0, 0, 1080, 720);
@@ -107,6 +112,7 @@ public class TestOnePlayerConnectToServer {
 		frame.setCursor(frame.getToolkit().createCustomCursor(
 				new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB),
 				new Point(0, 0), "null"));
+		
 
 		plane.setIcon(new ImageIcon(planeImage));
 		plane.setBounds(frame.getWidth() / 2 - planeImage.getWidth(null) / 2,
@@ -214,6 +220,106 @@ public class TestOnePlayerConnectToServer {
 					catch (ClassNotFoundException e1) {
 						e1.printStackTrace();
 					}
+			}
+		});
+		frame.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+					if (plane.isVisible())
+						try {
+							planeModel.setX(plane.getX()+5);
+							planeModel.setY(plane.getY());
+							planeMoveThroughServer(planeModel, inFromServer,
+									outToServer);
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}
+						// plane.move(e.getX() - plane.getWidth() / 2, e.getY()
+						// - plane.getHeight() / 2);
+						catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+					
+				}else if (e.getKeyCode() == KeyEvent.VK_LEFT){
+					if (plane.isVisible())
+						try {
+							planeModel.setX(plane.getX()-5);
+							planeModel.setY(plane.getY());
+							planeMoveThroughServer(planeModel, inFromServer,
+									outToServer);
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}
+						// plane.move(e.getX() - plane.getWidth() / 2, e.getY()
+						// - plane.getHeight() / 2);
+						catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+				}else if (e.getKeyCode() == KeyEvent.VK_UP){
+					if (plane.isVisible())
+						try {
+							planeModel.setX(plane.getX());
+							planeModel.setY(plane.getY()-5);
+							planeMoveThroughServer(planeModel, inFromServer,
+									outToServer);
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}
+						// plane.move(e.getX() - plane.getWidth() / 2, e.getY()
+						// - plane.getHeight() / 2);
+						catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+					
+				}else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+					if (plane.isVisible())
+						try {
+							planeModel.setX(plane.getX());
+							planeModel.setY(plane.getY()+5);
+							planeMoveThroughServer(planeModel, inFromServer,
+									outToServer);
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}
+						// plane.move(e.getX() - plane.getWidth() / 2, e.getY()
+						// - plane.getHeight() / 2);
+						catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+					
+				}else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+					if (plane.isVisible()) {
+
+						if (missileIndex < numberOfMissile) {
+							System.out.println("missileIndex lauched: "
+									+ missileIndex);
+
+							missileModel.setID(missileIndex);
+							missileModel.setX(plane.getX());
+							missileModel.setY(plane.getY() - plane.getHeight() + 50);
+							try {
+								missileMoveThroughServer(missileModel,
+										inFromServer, outToServer);
+							} catch (ClassNotFoundException | IOException e1) {
+
+								e1.printStackTrace();
+							}
+
+							// missileMove(missileList, missileIndex,
+							// e.getX(),e.getY() - plane.getHeight() + 50);
+
+							missileIndex = missileIndex + 1;
+						} else {
+							System.out.println("Run out of missile!");
+						}
+
+					}
+				}
 			}
 		});
 		frame.setVisible(true);
