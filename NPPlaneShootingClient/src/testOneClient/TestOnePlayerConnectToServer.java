@@ -89,8 +89,8 @@ public class TestOnePlayerConnectToServer {
 	EnemyModel enemyModel = new EnemyModel(0,0,0,"ready");
 	@SuppressWarnings("resource")
 	private void initialize() throws UnknownHostException, IOException {
-//		String ip = "127.0.0.1";
-		String ip = "192.168.31.153";
+		String ip = "127.0.0.1";
+//		String ip = "192.168.31.153";
 		int port = 6789;
 
 		Socket clientSocket;
