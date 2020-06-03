@@ -84,7 +84,7 @@ public class TestMultiplePlayerConnectToServer {
 	// local model to send to server
 	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
 	MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
-	EnemyModel modelEnemyLocal = new EnemyModel(0, 0, 0, "ready");
+	EnemyModel modelEnemyLocal = new EnemyModel(0, 0, 0,0, "ready");
 
 	// String ip = "127.0.0.1";
 	String ip = "";
@@ -165,7 +165,7 @@ public class TestMultiplePlayerConnectToServer {
 							frame.getContentPane().add(lblMissileList[j][i]);
 						}
 						for (int i = 0; i < numberOfEnemyPlane; i++) {
-							modelEnemyList[j][i] = new EnemyModel(0, 0, 0, "ready");
+							modelEnemyList[j][i] = new EnemyModel(0, 0, 0,0, "ready");
 							lblEnemyList[j][i] = new JLabel("");
 							lblEnemyList[j][i].setIcon(new ImageIcon(enemyImage));
 							lblEnemyList[j][i].setSize(enemyImage.getWidth(null),
@@ -596,7 +596,7 @@ public class TestMultiplePlayerConnectToServer {
 				} else {
 					modelEnemyLocal = new EnemyModel(myPlayerIndex, count,
 							(int) (Math.random() * (frame.getWidth()
-									- enemyImage.getWidth(null) - 1)) + 1,
+									- enemyImage.getWidth(null) - 1)) + 1,0,
 							"created");
 					updateLocalEnemyToServer();
 				}

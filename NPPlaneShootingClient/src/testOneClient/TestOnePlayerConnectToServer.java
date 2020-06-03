@@ -86,7 +86,7 @@ public class TestOnePlayerConnectToServer {
 
 	PlaneModel planeModel = new PlaneModel(0,0, 0,"playing");
 	MissileModel missileModel = new MissileModel(0,0, 0, 0,"ready");
-	EnemyModel enemyModel = new EnemyModel(0,0,0,"ready");
+	EnemyModel enemyModel = new EnemyModel(0,0,0,0,"ready");
 	@SuppressWarnings("resource")
 	private void initialize() throws UnknownHostException, IOException {
 		String ip = "127.0.0.1";
