@@ -4,10 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import testOneClient.EnemyModel;
+import testOneClient.MissileModel;
+import testOneClient.PlaneModel;
 import model.Player;
 import model.Room;
 import model.RoomList;
-
+import testMultipleClientGraphicOnServer.*;
 public class Deserialize {
 	public static RoomList deserializeRoomList(byte[] data) throws IOException, ClassNotFoundException{
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -28,5 +31,71 @@ public class Deserialize {
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 	    ObjectInputStream is = new ObjectInputStream(in);
 	    return (Room) is.readObject();
+	}
+	public static PlaneModel deserializePlaneModel(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (PlaneModel) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+
+	public static MissileModel deserializeMissileModel(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (MissileModel) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+
+	public static EnemyModel deserializeEnemyModel(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (EnemyModel) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+
+	public static PlaneModel[] deserializePlaneModelList(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (PlaneModel[]) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+
+	public static MissileModel[][] deserializeMissileModelList(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (MissileModel[][]) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+
+	}
+
+	public static EnemyModel[][] deserializeEnemyModelList(byte[] data) {
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (EnemyModel[][]) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
 	}
 }

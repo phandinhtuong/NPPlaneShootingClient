@@ -6,38 +6,31 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import objectByteTransform.Deserialize;
+import objectByteTransform.Serialize;
 import testOneClient.EnemyModel;
 import testOneClient.MissileModel;
 import testOneClient.PlaneModel;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class Client {
 
@@ -86,7 +79,7 @@ public class Client {
 	// local model to send to server
 	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
 	MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
-	EnemyModel modelEnemyLocal = new EnemyModel(0, 0, 0,0, "ready");
+	
 
 	// String ip = "127.0.0.1";
 	String ip = "";
@@ -126,11 +119,12 @@ public class Client {
 
 		txtIpHere = new JTextField();
 		txtIpHere.setText("");
-		txtIpHere.setBounds(60, 142, 179, 26);
+		txtIpHere.setBounds(242, 189, 179, 26);
 		frame.getContentPane().add(txtIpHere);
 		txtIpHere.setColumns(10);
 		
 		final JButton btnConnect = new JButton("Connect");
+		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server:");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				displayGameLog(Integer.toString((e.getID())));
@@ -140,6 +134,7 @@ public class Client {
 				txtIpHere.setVisible(false);
 				btnConnect.setVisible(false);
 				btnLocalhost.setVisible(false);
+				lblOrInputIp.setVisible(false);
 				try {
 					clientSocket = new Socket(ip, port);
 					inFromServer = new DataInputStream(clientSocket.getInputStream());
@@ -180,6 +175,10 @@ public class Client {
 //								lblMissileList[0][0].getHeight()));
 //displayGameLog("fasf"+Integer.toString(lblEnemyList[0][0].getWidth())+Integer.toString(
 //		lblEnemyList[0][0].getHeight()));
+//					displayGameLog("player"+Integer.toString(lblPlaneList[0].getWidth())+Integer.toString(
+//							lblPlaneList[0].getHeight()));	
+					
+					
 					// get player index
 					while ((myPlayerID = inFromServer.readInt()) != -1) {
 						displayGameLog("My Player Index is " + myPlayerID);
@@ -262,7 +261,6 @@ public class Client {
 							});
 
 					loadDataFromServer();
-					createEnemy();
 					frame.setVisible(true);
 				} catch (IOException e2) {
 					frame.setCursor(Cursor.DEFAULT_CURSOR);
@@ -281,11 +279,16 @@ public class Client {
 			//	btnConnect.mou
 			}
 		});
-		btnLocalhost.setBounds(484, 141, 209, 29);
+		btnLocalhost.setBounds(314, 102, 209, 29);
 		frame.getContentPane().add(btnLocalhost);
 		
-		btnConnect.setBounds(265, 141, 115, 29);
+		btnConnect.setBounds(436, 188, 115, 29);
 		frame.getContentPane().add(btnConnect);
+		
+		
+		lblOrInputIp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblOrInputIp.setBounds(305, 147, 228, 26);
+		frame.getContentPane().add(lblOrInputIp);
 		
 		
 
@@ -313,21 +316,21 @@ public class Client {
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] planeModelListInByte = new byte[i];
 						inFromServer.read(planeModelListInByte);
-						modelPlaneList = deserializePlaneModelList(planeModelListInByte);
+						modelPlaneList = Deserialize.deserializePlaneModelList(planeModelListInByte);
 						break;
 					}
 					outToServer.writeInt(5);
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] missileModelListInByte = new byte[i];
 						inFromServer.read(missileModelListInByte);
-						modelMissileList = deserializeMissileModelList(missileModelListInByte);
+						modelMissileList = Deserialize.deserializeMissileModelList(missileModelListInByte);
 						break;
 					}
 					outToServer.writeInt(6);
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] enemyModelListInByte = new byte[i];
 						inFromServer.read(enemyModelListInByte);
-						modelEnemyList = deserializeEnemyModelList(enemyModelListInByte);
+						modelEnemyList = Deserialize.deserializeEnemyModelList(enemyModelListInByte);
 						break;
 					}
 					displayAllPlayers();
@@ -408,158 +411,19 @@ public class Client {
 
 	@SuppressWarnings("deprecation")
 	public void displayOneMissile(final int j, final int i) {
-//		displayGameLog("playerID:" + j + " missileID:" + i + " x:"
-//				+ modelMissileList[j][i].getX() + " y:"
-//				+ modelMissileList[j][i].getY() + " launched");
 		lblMissileList[j][i].setVisible(true);
 		lblMissileList[j][i].move(modelMissileList[j][i].getX(), modelMissileList[j][i].getY());
-//		int delay = 50; // milliseconds
-//		ActionListener taskPerformer = new ActionListener() {
-//			int count = 0;
-//			int missileX = modelMissileList[j][i].getX()
-//					- lblMissileList[j][i].getWidth() / 2; // x does not change
-//			int missileY = 0;
-//			int enemyPlaneListIndexDie = -1; // dead enemy index
-//			int k = 0;
-//
-//			@SuppressWarnings("deprecation")
-//			public void actionPerformed(ActionEvent evt) {
-//				if (modelMissileList[j][i].getStatus().equals("dead")) {
-//					displayGameLog("playerID:" + j + " missileID:" + i + " x:"
-//							+ modelMissileList[j][i].getX() + " y:"
-//							+ modelMissileList[j][i].getY() + " dead");
-//					lblMissileList[j][i].setVisible(false);
-//					((Timer) evt.getSource()).stop();
-//					return;
-//				} else {
-//					// y change with speed
-//					missileY = modelMissileList[j][i].getY() - 15 * count;
-//					for (k = 0; k < numberOfPlayers; k++) {
-//						enemyPlaneListIndexDie = checkCollisionListMissileEnemies(
-//								missileX, missileY,
-//								lblMissileList[j][i].getWidth(),
-//								lblMissileList[j][i].getHeight(), k);
-//						if (enemyPlaneListIndexDie != -1)
-//							break;
-//					}
-//
-//					if (count == 1080 || missileY < 15
-//							|| (enemyPlaneListIndexDie != -1)) {
-//						// missile kills enemy
-//						if (enemyPlaneListIndexDie != -1) {
-//							lblEnemyList[k][enemyPlaneListIndexDie]
-//									.setVisible(false);
-//							modelEnemyLocal.setPlayerID(k);
-//							modelEnemyLocal.setID(enemyPlaneListIndexDie);
-//							modelEnemyLocal.setStatus("dead");
-//							modelEnemyList[k][enemyPlaneListIndexDie]
-//									.setStatus("dead");
-//							updateLocalEnemyToServer();
-//							displayGameLog("missileIndex = " + missileIndex
-//									+ " destroyed enemyPlaneListIndex = "
-//									+ enemyPlaneListIndexDie);
-//							enemyPlaneListIndexDie = -1;
-//						}
-//						displayGameLog("enemyPlaneListIndexDie = "
-//								+ enemyPlaneListIndexDie);
-//						modelMissileLocal.setPlayerID(j);
-//						modelMissileLocal.setID(i);
-//						modelMissileLocal.setStatus("dead");
-//						modelMissileList[j][i].setStatus("dead");
-//						updateLocalMissileToServer();
-//						((Timer) evt.getSource()).stop();
-//						return;
-//					} else {
-//						lblMissileList[j][i].setVisible(true);
-//						lblMissileList[j][i].move(missileX, missileY);
-//					}
-//					count++;
-//				}
-//			}
-//		};
-//		Timer t = new Timer(delay, taskPerformer);
-//		t.start();
 	}
 
 	@SuppressWarnings("deprecation")
 	public void displayOneEnemy(final int j, final int i) {
-//		int delay = 10;
-//		ActionListener taskPerformer = new ActionListener() {
-//			int count = 0;
-//			int enemyPlaneY = 0;// initial y of enemy
-//			int k = -1;
-//
-//			@SuppressWarnings("deprecation")
-//			public void actionPerformed(ActionEvent evt) {
-//				if (modelEnemyList[j][i].getStatus().equals("dead")) {
-//					lblEnemyList[j][i].setVisible(false);
-//					((Timer) evt.getSource()).stop();
-//					return;
-//				} else {
-//					enemyPlaneY = count - lblEnemyList[j][i].getHeight();// speed
-//					if ((k = checkCollisionListEnemyPlanes(
-//							modelEnemyList[j][i].getX(), enemyPlaneY,
-//							lblEnemyList[j][i].getWidth(),
-//							lblEnemyList[j][i].getHeight())) != -1) {
-//						// update dead player
-//						String oldStatus = modelPlaneLocal.getStatus();
-//						modelPlaneLocal.setID(k);
-//						modelPlaneLocal.setStatus("dead");
-//						updateLocalPlaneToServer();
-//						modelPlaneLocal.setID(myPlayerID);
-//						modelPlaneLocal.setStatus(oldStatus);
-//						modelPlaneList[k].setStatus("dead");
-//
-//						lblEnemyList[j][i].setVisible(false);
-//						modelEnemyLocal.setID(i);
-//						modelEnemyLocal.setPlayerID(j);
-//						modelEnemyLocal.setStatus("dead");
-//						updateLocalEnemyToServer();
-//						((Timer) evt.getSource()).stop();
-//						return;
-//
-//					}
-//					// if
-//					// (checkCollisionListEnemyPlanes(modelEnemyLocal.getX(),
-//					// enemyPlaneY, lblEnemyList[j][i].getWidth(),
-//					// lblEnemyList[j][i].getHeight())!=-1) {
-//					// modelPlaneLocal.setStatus("Died");
-//					// updateLocalPlaneToServer();
-//					// // lblPlaneList[myPlayerIndex]
-//					// // allPlayers[myPlayerIndex].setVisible(false);
-//					// // TODO
-//					// lblYouDie.setVisible(true);
-//					// frame.setCursor(Cursor.DEFAULT_CURSOR);
-//					// displayGameLog("you ded by enemy plane index " +
-//					// i
-//					// + " of player " + j);
-//					// }
-//
-//					if (enemyPlaneY >= frame.getHeight()
-//							- lblEnemyList[j][i].getHeight()) {
-//						modelEnemyLocal.setPlayerID(j);
-//						modelEnemyLocal.setID(i);
-//						modelEnemyLocal.setStatus("dead");
-//						modelEnemyList[j][i].setStatus("dead");
-//						updateLocalEnemyToServer();
-//						// allEnemies[j][i].setVisible(false);
-//						((Timer) evt.getSource()).stop();
-//						return;
-//					} else {
 						lblEnemyList[j][i].setVisible(true);
 						lblEnemyList[j][i].move(modelEnemyList[j][i].getX(),
 								modelEnemyList[j][i].getY());
-//					}
-//					count++;
-//				}
-//			}
-//		};
-//		Timer t = new Timer(delay, taskPerformer);
-//		t.start();
 	}
 
 	public void updateLocalPlaneToServer() {
-		byte[] planeModelInByte = serialize(modelPlaneLocal);
+		byte[] planeModelInByte = Serialize.serialize(modelPlaneLocal);
 		try {
 			outToServer.writeInt(1);
 			outToServer.writeInt(planeModelInByte.length);
@@ -572,7 +436,7 @@ public class Client {
 	}
 
 	public void updateLocalMissileToServer() {
-		byte[] missileModelInByte = serialize(modelMissileLocal);
+		byte[] missileModelInByte = Serialize.serialize(modelMissileLocal);
 		try {
 			outToServer.writeInt(2);
 			outToServer.writeInt(missileModelInByte.length);
@@ -583,197 +447,11 @@ public class Client {
 		}
 	}
 
-	public void updateLocalEnemyToServer() {
-		byte[] enemyModelInByte = serialize(modelEnemyLocal);
-		try {
-			outToServer.writeInt(3);
-			outToServer.writeInt(enemyModelInByte.length);
-			outToServer.write(enemyModelInByte);
-		} catch (IOException e) {
-			displayGameLog(e.getMessage());
-			return;
-		}
-	}
+	
 
-	public void createEnemy() {
-		int delay = 2000;
-		ActionListener taskPerformer = new ActionListener() {
-			int count = 0;
-
-			public void actionPerformed(ActionEvent evt) {
-				if (count == numberOfEnemyPlane
-						&& modelPlaneLocal.getStatus().equals("dead")) {
-					((Timer) evt.getSource()).stop();
-				} else {
-					modelEnemyLocal = new EnemyModel(myPlayerID, count,
-							(int) (Math.random() * (frame.getWidth()
-									- enemyImage.getWidth(null) - 1)) + 1,0,
-							"created");
-					updateLocalEnemyToServer();
-				}
-				count++;
-			}
-		};
-		Timer t = new Timer(delay, taskPerformer);
-		t.start();
-	}
-
-//	public int checkCollisionListMissileEnemies(int x, int y, int width,
-//			int height, int enemyPlayerIndex) {
-//		for (int i = 0; i < lblEnemyList[enemyPlayerIndex].length; i++) {
-//			if (modelEnemyList[enemyPlayerIndex][i].getStatus().equals(
-//					"created")) {
-//				if (checkOneCollisionMissileEnemy(x, y, width, height,
-//						enemyPlayerIndex, i)) {
-//					return i;
-//				}
-//			}
-//
-//		}
-//		return -1;
-//	}
-//
-//	public boolean checkOneCollisionMissileEnemy(int x, int y, int width,
-//			int height, int enemyPlayerIndex, int enemyListIndex) {
-//		Rectangle a = new Rectangle(x, y, width, height);
-//		Rectangle b = new Rectangle(
-//				lblEnemyList[enemyPlayerIndex][enemyListIndex].getX(),
-//				lblEnemyList[enemyPlayerIndex][enemyListIndex].getY(),
-//				lblEnemyList[enemyPlayerIndex][enemyListIndex].getWidth(),
-//				lblEnemyList[enemyPlayerIndex][enemyListIndex].getHeight());
-//		if (a.intersects(b))
-//			return true;
-//		else
-//			return false;
-//	}
-
-	public int checkCollisionListEnemyPlanes(int x, int y, int width, int height) {
-		for (int i = 0; i < numberOfPlayers; i++) {
-			if (modelPlaneList[i].getStatus().equals("playing")) {
-				if (checkOneCollisionEnemyPlane(x, y, width, height, i))
-					return i;
-			}
-		}
-		return -1;
-	}
-
-	public boolean checkOneCollisionEnemyPlane(int x, int y, int width,
-			int height, int playerIndex) {
-		Rectangle a = new Rectangle(x, y, width, height);
-		Rectangle b = new Rectangle(lblPlaneList[playerIndex].getX(),
-				lblPlaneList[playerIndex].getY(),
-				lblPlaneList[playerIndex].getWidth(),
-				lblPlaneList[playerIndex].getHeight());
-		if (a.intersects(b))
-			return true;
-		else
-			return false;
-	}
+	
 
 	public static void displayGameLog(String s) {
 		gameLog.setText(gameLog.getText() + s + "\n");
-	}
-
-	public static byte[] serialize(PlaneModel planeModel) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream os = new ObjectOutputStream(out);
-			os.writeObject(planeModel);
-			return out.toByteArray();
-		} catch (IOException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static byte[] serialize(MissileModel missileModel) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream os = new ObjectOutputStream(out);
-			os.writeObject(missileModel);
-			return out.toByteArray();
-		} catch (IOException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static byte[] serialize(EnemyModel enemyModel) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream os = new ObjectOutputStream(out);
-			os.writeObject(enemyModel);
-			return out.toByteArray();
-		} catch (IOException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static PlaneModel deserializePlaneModel(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (PlaneModel) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static MissileModel deserializeMissileModel(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (MissileModel) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static EnemyModel deserializeEnemyModel(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (EnemyModel) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static PlaneModel[] deserializePlaneModelList(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (PlaneModel[]) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-	}
-
-	public static MissileModel[][] deserializeMissileModelList(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (MissileModel[][]) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
-
-	}
-
-	public static EnemyModel[][] deserializeEnemyModelList(byte[] data) {
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		try {
-			ObjectInputStream is = new ObjectInputStream(in);
-			return (EnemyModel[][]) is.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			displayGameLog(e.getMessage());
-			return null;
-		}
 	}
 }
