@@ -123,6 +123,8 @@ public class Client {
 		frame.getContentPane().add(txtIpHere);
 		txtIpHere.setColumns(10);
 		
+		
+		//connect to localhost or input IP address of server
 		final JButton btnConnect = new JButton("Connect");
 		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server:");
 		btnConnect.addActionListener(new ActionListener() {
@@ -202,7 +204,7 @@ public class Client {
 
 					lblYouDie.setVisible(false);
 
-					// mouse pressed = launch missile
+					// mouse pressed = launch missile / Create missile
 					frame.getContentPane().addMouseListener(new MouseAdapter() {
 						@Override
 						public void mousePressed(final MouseEvent e) {
