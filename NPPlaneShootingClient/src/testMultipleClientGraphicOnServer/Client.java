@@ -127,9 +127,9 @@ public class Client {
 		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server:");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				displayGameLog(Integer.toString((e.getID())));
+//				displayGameLog(Integer.toString((e.getID())));
 				ip = txtIpHere.getText();
-				displayGameLog(ip);
+				displayGameLog("Connected to server IP: "+ip);
 				ipOk = 1;
 				txtIpHere.setVisible(false);
 				btnConnect.setVisible(false);
