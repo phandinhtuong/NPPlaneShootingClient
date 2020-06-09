@@ -197,7 +197,7 @@ public class Client {
 					lblYouDie.setHorizontalAlignment(SwingConstants.CENTER);
 					lblYouDie.setFont(new Font("Times New Roman", Font.BOLD, 99));
 					lblYouDie.setBounds(frame.getWidth() / 2 - 200,
-							frame.getHeight() / 2 - 100, 400, 200);
+							frame.getHeight() / 2 - 100, 500, 200);
 					frame.getContentPane().add(lblYouDie);
 
 					lblYouDie.setVisible(false);
@@ -208,8 +208,8 @@ public class Client {
 						public void mousePressed(final MouseEvent e) {
 							if (modelPlaneLocal.getStatus().equals("playing")) {
 								if (missileIndex < numberOfMissile) {
-									displayGameLog("missileIndex lauched: "
-											+ missileIndex);
+//									displayGameLog("missileIndex lauched: "
+//											+ missileIndex);
 									modelMissileLocal.setPlayerID(myPlayerID);
 									modelMissileLocal.setID(missileIndex);
 									modelMissileLocal.setX(e.getX()-lblMissileList[0][0].getWidth()/2);
@@ -360,7 +360,7 @@ public class Client {
 						lblPlaneList[i].setVisible(false);
 					}
 
-				} else if (modelPlaneList[i].getStatus().equals("disconnected")) {
+				} else if (modelPlaneList[i].getStatus().equals("disconnected")&&lblPlaneList[i].isVisible()) {
 					//String oldStatus = modelPlaneLocal.getStatus();
 					displayGameLog("Player " + i + " disconnected.");
 //					modelPlaneLocal.setID(i);
