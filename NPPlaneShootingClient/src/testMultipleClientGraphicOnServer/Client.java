@@ -348,55 +348,61 @@ public class Client {
 	}
 
 	public void displayAllPlayers() {
-		modelPlaneLocal = modelPlaneList[myPlayerID];
-		for (int i = 0; i < modelPlaneList.length; i++) {
-			if (modelPlaneList[i].getStatus().equals("dead")) {
-				if (i == myPlayerID) {
-					lblYouDie.setVisible(true);
-				}
-				if (lblPlaneList[i].isVisible()) {
-					displayGameLog("Player " + i + " is dead.");
-					lblPlaneList[i].setVisible(false);
-				}
+		if (modelPlaneList!=null){
+			modelPlaneLocal = modelPlaneList[myPlayerID];
+			for (int i = 0; i < modelPlaneList.length; i++) {
+				if (modelPlaneList[i].getStatus().equals("dead")) {
+					if (i == myPlayerID) {
+						lblYouDie.setVisible(true);
+					}
+					if (lblPlaneList[i].isVisible()) {
+						displayGameLog("Player " + i + " is dead.");
+						lblPlaneList[i].setVisible(false);
+					}
 
-			} else if (modelPlaneList[i].getStatus().equals("disconnected")) {
-				//String oldStatus = modelPlaneLocal.getStatus();
-				displayGameLog("Player " + i + " disconnected.");
-//				modelPlaneLocal.setID(i);
-//				modelPlaneLocal.setStatus("dead");
-//				updateLocalPlaneToServer();
-//				modelPlaneLocal.setID(myPlayerID);
-//				modelPlaneLocal.setStatus(oldStatus);
-				lblPlaneList[i].setVisible(false);
-			} else if (modelPlaneList[i].getStatus().equals("playing")) {
-				displayOnePlayer(i);
+				} else if (modelPlaneList[i].getStatus().equals("disconnected")) {
+					//String oldStatus = modelPlaneLocal.getStatus();
+					displayGameLog("Player " + i + " disconnected.");
+//					modelPlaneLocal.setID(i);
+//					modelPlaneLocal.setStatus("dead");
+//					updateLocalPlaneToServer();
+//					modelPlaneLocal.setID(myPlayerID);
+//					modelPlaneLocal.setStatus(oldStatus);
+					lblPlaneList[i].setVisible(false);
+				} else if (modelPlaneList[i].getStatus().equals("playing")) {
+					displayOnePlayer(i);
+				}
 			}
 		}
 	}
 
 	public void displayAllMissiles() {
-		for (int j = 0; j < modelMissileList.length; j++) {
-			for (int i = 0; i < modelMissileList[j].length; i++) {
-				if (modelMissileList[j][i].getStatus().equals("dead"))
-					lblMissileList[j][i].setVisible(false);
-				else if (modelMissileList[j][i].getStatus().equals("launched")){
-					displayOneMissile(j, i);
-				}
+		if (modelMissileList!=null){
+			for (int j = 0; j < modelMissileList.length; j++) {
+				for (int i = 0; i < modelMissileList[j].length; i++) {
+					if (modelMissileList[j][i].getStatus().equals("dead"))
+						lblMissileList[j][i].setVisible(false);
+					else if (modelMissileList[j][i].getStatus().equals("launched")){
+						displayOneMissile(j, i);
+					}
 
+				}
 			}
 		}
 	}
 
 	public void displayAllEnemies() {
-		for (int j = 0; j < modelEnemyList.length; j++) {
-			for (int i = 0; i < modelEnemyList[j].length; i++) {
-				if (modelEnemyList[j][i].getStatus().equals("dead"))
-					lblEnemyList[j][i].setVisible(false);
-				else if (modelEnemyList[j][i].getStatus().equals("created")
-						) {
-					displayOneEnemy(j, i);
-				}
+		if (modelEnemyList!=null){
+			for (int j = 0; j < modelEnemyList.length; j++) {
+				for (int i = 0; i < modelEnemyList[j].length; i++) {
+					if (modelEnemyList[j][i].getStatus().equals("dead"))
+						lblEnemyList[j][i].setVisible(false);
+					else if (modelEnemyList[j][i].getStatus().equals("created")
+							) {
+						displayOneEnemy(j, i);
+					}
 
+				}
 			}
 		}
 	}
