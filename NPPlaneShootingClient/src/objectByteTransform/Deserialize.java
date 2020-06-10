@@ -3,14 +3,15 @@ package objectByteTransform;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
+import directPlaying.refactorDataStructure.Client;
 import testOneClient.EnemyModel;
 import testOneClient.MissileModel;
 import testOneClient.PlaneModel;
 import model.Player;
 import model.Room;
 import model.RoomList;
-import testMultipleClientGraphicOnServer.*;
 public class Deserialize {
 	public static RoomList deserializeRoomList(byte[] data) throws IOException, ClassNotFoundException{
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
@@ -93,6 +94,16 @@ public class Deserialize {
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
 			return (EnemyModel[][]) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+	public static ArrayList<PlaneModel> deserializePlaneModelArrayList(byte[] data){
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (ArrayList<PlaneModel>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;

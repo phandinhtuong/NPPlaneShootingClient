@@ -3,14 +3,15 @@ package objectByteTransform;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
+import directPlaying.refactorDataStructure.Client;
 import testOneClient.EnemyModel;
 import testOneClient.MissileModel;
 import testOneClient.PlaneModel;
 import model.Player;
 import model.Room;
 import model.RoomList;
-import testMultipleClientGraphicOnServer.*;
 
 public class Serialize {
 	public static byte[] serialize(RoomList roomList) throws IOException{
@@ -60,6 +61,17 @@ public class Serialize {
 		try {
 			ObjectOutputStream os = new ObjectOutputStream(out);
 			os.writeObject(enemyModel);
+			return out.toByteArray();
+		} catch (IOException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+	public static byte[] serialize(ArrayList<PlaneModel> modelPlaneList){
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream os = new ObjectOutputStream(out);
+			os.writeObject(modelPlaneList);
 			return out.toByteArray();
 		} catch (IOException e) {
 			Client.displayGameLog(e.getMessage());

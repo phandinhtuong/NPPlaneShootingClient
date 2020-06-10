@@ -1,4 +1,4 @@
-package testMultipleClientGraphicOnClient;
+package directPlaying.testMultipleClientGraphicOnClient;
 
 import java.awt.Color;
 import java.awt.Component;

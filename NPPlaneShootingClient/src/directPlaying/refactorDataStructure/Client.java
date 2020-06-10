@@ -1,4 +1,4 @@
-package testMultipleClientGraphicOnServer;
+package directPlaying.refactorDataStructure;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,7 +68,10 @@ public class Client {
 	static JTextArea gameLog = new JTextArea(""); // display game log
 
 	// model list from server
-	PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
+
+//	ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
+	static ArrayList<PlaneModel> modelPlaneList = null;
+//	PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
 	MissileModel[][] modelMissileList = new MissileModel[numberOfPlayers][numberOfMissile];
 	EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
 
@@ -141,9 +145,15 @@ public class Client {
 					clientSocket = new Socket(ip, port);
 					inFromServer = new DataInputStream(clientSocket.getInputStream());
 					outToServer = new DataOutputStream(clientSocket.getOutputStream());
+					
+					
+					
 					// Initial all models and label
 					for (int j = 0; j < numberOfPlayers; j++) {
-						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting");
+						
+						//Initial modelPlaneList
+//						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting");
+						
 						lblPlaneList[j] = new JLabel("");
 						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
 						lblPlaneList[j].setBounds(
@@ -180,14 +190,15 @@ public class Client {
 //					displayGameLog("player"+Integer.toString(lblPlaneList[0].getWidth())+Integer.toString(
 //							lblPlaneList[0].getHeight()));	
 					
+					updateLocalPlaneToServer();
 					
 					// get player index
 					while ((myPlayerID = inFromServer.readInt()) != -1) {
 						displayGameLog("My Player Index is " + myPlayerID);
 						// TODO
-						modelPlaneList[myPlayerID].setX(modelPlaneLocal.getX());
-						modelPlaneList[myPlayerID].setY(modelPlaneLocal.getY());
-						modelPlaneList[myPlayerID].setStatus("playing");
+//						modelPlaneList[myPlayerID].setX(modelPlaneLocal.getX());
+//						modelPlaneList[myPlayerID].setY(modelPlaneLocal.getY());
+//						modelPlaneList[myPlayerID].setStatus("playing");
 						modelPlaneLocal.setID(myPlayerID);
 						break;
 					}
@@ -235,7 +246,7 @@ public class Client {
 							new MouseMotionAdapter() {
 								@Override
 								public void mouseMoved(MouseEvent e) {
-									if (modelPlaneList[myPlayerID].getStatus().equals("playing")) {
+									if (modelPlaneList.get(modelPlaneList.indexOf(modelPlaneLocal)).getStatus().equals("playing")) {
 										modelPlaneLocal.setID(myPlayerID);
 										modelPlaneLocal.setX(e.getX()
 												- lblPlaneList[myPlayerID]
@@ -318,7 +329,7 @@ public class Client {
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] planeModelListInByte = new byte[i];
 						inFromServer.read(planeModelListInByte);
-						modelPlaneList = Deserialize.deserializePlaneModelList(planeModelListInByte);
+						modelPlaneList = Deserialize.deserializePlaneModelArrayList(planeModelListInByte);
 						break;
 					}
 					outToServer.writeInt(5);
@@ -348,33 +359,65 @@ public class Client {
 		};
 		new Timer(delay, taskPerformer).start();
 	}
+	static public int indexOfPlaneWithID(int ID){
+		for (PlaneModel planeModelInList : modelPlaneList){
+			if (planeModelInList.getID() == ID){
+				return ID;
+			}
+		}
+		return -1;
+	}
 
 	public void displayAllPlayers() {
 		if (modelPlaneList!=null){
-			modelPlaneLocal = modelPlaneList[myPlayerID];
-			for (int i = 0; i < modelPlaneList.length; i++) {
-				if (modelPlaneList[i].getStatus().equals("dead")) {
-					if (i == myPlayerID) {
+//			modelPlaneLocal = modelPlaneList[myPlayerID];
+			modelPlaneLocal = modelPlaneList.get(indexOfPlaneWithID(myPlayerID));
+			for (PlaneModel planeModelInList : modelPlaneList){
+				if (planeModelInList.getStatus().equals("dead")) {
+					if (planeModelInList.getID() == myPlayerID) {
 						lblYouDie.setVisible(true);
 					}
-					if (lblPlaneList[i].isVisible()) {
-						displayGameLog("Player " + i + " is dead.");
-						lblPlaneList[i].setVisible(false);
+					if (lblPlaneList[planeModelInList.getID()].isVisible()) {
+						displayGameLog("Player " + planeModelInList.getID() + " is dead.");
+						lblPlaneList[planeModelInList.getID()].setVisible(false);
 					}
 
-				} else if (modelPlaneList[i].getStatus().equals("disconnected")&&lblPlaneList[i].isVisible()) {
+				} else if (modelPlaneList.get(indexOfPlaneWithID(planeModelInList.getID())).getStatus().equals("disconnected")&&lblPlaneList[planeModelInList.getID()].isVisible()) {
 					//String oldStatus = modelPlaneLocal.getStatus();
-					displayGameLog("Player " + i + " disconnected.");
+					displayGameLog("Player " + planeModelInList.getID() + " disconnected.");
 //					modelPlaneLocal.setID(i);
 //					modelPlaneLocal.setStatus("dead");
 //					updateLocalPlaneToServer();
 //					modelPlaneLocal.setID(myPlayerID);
 //					modelPlaneLocal.setStatus(oldStatus);
-					lblPlaneList[i].setVisible(false);
-				} else if (modelPlaneList[i].getStatus().equals("playing")) {
-					displayOnePlayer(i);
+					lblPlaneList[planeModelInList.getID()].setVisible(false);
+				} else if (modelPlaneList.get(indexOfPlaneWithID(planeModelInList.getID())).getStatus().equals("playing")) {
+					displayOnePlayer(planeModelInList.getID());
 				}
 			}
+//			for (int i = 0; i < modelPlaneList.length; i++) {
+//				if (modelPlaneList[i].getStatus().equals("dead")) {
+//					if (i == myPlayerID) {
+//						lblYouDie.setVisible(true);
+//					}
+//					if (lblPlaneList[i].isVisible()) {
+//						displayGameLog("Player " + i + " is dead.");
+//						lblPlaneList[i].setVisible(false);
+//					}
+//
+//				} else if (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("disconnected")&&lblPlaneList[i].isVisible()) {
+//					//String oldStatus = modelPlaneLocal.getStatus();
+//					displayGameLog("Player " + i + " disconnected.");
+////					modelPlaneLocal.setID(i);
+////					modelPlaneLocal.setStatus("dead");
+////					updateLocalPlaneToServer();
+////					modelPlaneLocal.setID(myPlayerID);
+////					modelPlaneLocal.setStatus(oldStatus);
+//					lblPlaneList[i].setVisible(false);
+//				} else if (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("playing")) {
+//					displayOnePlayer(i);
+//				}
+//			}
 		}
 	}
 
@@ -414,7 +457,7 @@ public class Client {
 
 		lblPlaneList[i].setVisible(true);
 		lblPlaneList[i]
-				.move(modelPlaneList[i].getX(), modelPlaneList[i].getY());
+				.move(modelPlaneList.get(indexOfPlaneWithID(i)).getX(), modelPlaneList.get(indexOfPlaneWithID(i)).getY());
 	}
 
 	@SuppressWarnings("deprecation")
