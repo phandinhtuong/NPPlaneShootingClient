@@ -109,4 +109,14 @@ public class Deserialize {
 			return null;
 		}
 	}
+	public static ArrayList<MissileModel> deserializeMissileModelArrayList(byte[] data){
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (ArrayList<MissileModel>) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
 }

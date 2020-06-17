@@ -8,15 +8,15 @@ public class TestFindObjectInList {
 	static ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
 	public static void main(String[] args){
 		PlaneModel planeModel = new PlaneModel(1, 500, 500, "playing");
-		PlaneModel planeModel2 = new PlaneModel(1, 500, 500, "playing");
+//		PlaneModel planeModel2 = new PlaneModel(1, 500, 500, "playing");
 		modelPlaneList.add(planeModel);
-		modelPlaneList.add(planeModel2);
+//		modelPlaneList.add(planeModel2);
 		System.out.println("modelPlaneList.indexOf(planeModel) = "+modelPlaneList.indexOf(planeModel));
 //		PlaneModel planeModel2 = new PlaneModel(1, 500, 500, "playing");
 //		System.out.println("modelPlaneList.indexOf(planeModel2) = "+modelPlaneList.indexOf(planeModel2));
 		planeModel.setX(200);
 		planeModel.setID(2);
-		planeModel.setY(200);
+		planeModel.setY(250);
 		planeModel.setStatus("dead");
 		System.out.println("modelPlaneList.indexOf(planeModel) = "+modelPlaneList.indexOf(planeModel));
 //		modelPlaneList.forEach(System.out.println());
@@ -29,6 +29,7 @@ public class TestFindObjectInList {
 			System.out.println(planeModelInList.getStatus());
 			
 		}
-		System.out.println(modelPlaneList.get(modelPlaneList.indexOf(planeModel)).getStatus());
+//		byte[] pl
+//		System.out.println(modelPlaneList.get(modelPlaneList.indexOf(planeModel)).getStatus());
 	}
 }

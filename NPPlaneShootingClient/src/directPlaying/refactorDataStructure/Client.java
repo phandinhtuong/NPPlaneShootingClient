@@ -56,6 +56,7 @@ public class Client {
 	int myPlayerID = -1;
 	static int numberOfPlayers = 3;
 
+	int missileWidthOrHeight = 52;
 	// Load images
 	Image missileImage = new ImageIcon(this.getClass().getResource(
 			"/missile.png")).getImage();
@@ -69,21 +70,31 @@ public class Client {
 
 	// model list from server
 
-//	ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
+	// ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
 	static ArrayList<PlaneModel> modelPlaneList = null;
-//	PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
-	MissileModel[][] modelMissileList = new MissileModel[numberOfPlayers][numberOfMissile];
+	// PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
+	
+//	MissileModel[][] modelMissileList = new MissileModel[numberOfPlayers][numberOfMissile];
+	static ArrayList<MissileModel> modelMissileList = new ArrayList<MissileModel>();
+	
+	
 	EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
 
 	// label to display the model list
 	JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
-	JLabel[][] lblMissileList = new JLabel[numberOfPlayers][numberOfMissile];
+	
+//	JLabel[][] lblMissileList = new JLabel[numberOfPlayers][numberOfMissile];
+	JLabel lblMissile = new JLabel();
+	//TODO
+	static ArrayList<JLabel> lblMissileList = new ArrayList<JLabel>();
+	
 	JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
 
 	// local model to send to server
-	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
+	// PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
+
+	PlaneModel modelPlaneLocal = null;
 	MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
-	
 
 	// String ip = "127.0.0.1";
 	String ip = "";
@@ -126,16 +137,15 @@ public class Client {
 		txtIpHere.setBounds(242, 189, 179, 26);
 		frame.getContentPane().add(txtIpHere);
 		txtIpHere.setColumns(10);
-		
-		
-		//connect to localhost or input IP address of server
+
+		// connect to localhost or input IP address of server
 		final JButton btnConnect = new JButton("Connect");
 		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server:");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				displayGameLog(Integer.toString((e.getID())));
+				// displayGameLog(Integer.toString((e.getID())));
 				ip = txtIpHere.getText();
-				displayGameLog("Connected to server IP: "+ip);
+				displayGameLog("Connected to server IP: " + ip);
 				ipOk = 1;
 				txtIpHere.setVisible(false);
 				btnConnect.setVisible(false);
@@ -143,177 +153,208 @@ public class Client {
 				lblOrInputIp.setVisible(false);
 				try {
 					clientSocket = new Socket(ip, port);
-					inFromServer = new DataInputStream(clientSocket.getInputStream());
-					outToServer = new DataOutputStream(clientSocket.getOutputStream());
-					
-					
-					
+					inFromServer = new DataInputStream(clientSocket
+							.getInputStream());
+					outToServer = new DataOutputStream(clientSocket
+							.getOutputStream());
+
 					// Initial all models and label
 					for (int j = 0; j < numberOfPlayers; j++) {
-						
-						//Initial modelPlaneList
-//						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting");
-						
+
+						// Initial modelPlaneList
+						// modelPlaneList[j] = new PlaneModel(j, 0, 0,
+						// "waiting");
+
 						lblPlaneList[j] = new JLabel("");
 						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
-						lblPlaneList[j].setBounds(
-								frame.getWidth() / 2 - planeImage.getWidth(null) / 2
-										* j,
-								frame.getHeight() - planeImage.getHeight(null) * 2,
-								planeImage.getWidth(null), planeImage.getHeight(null));
+						lblPlaneList[j].setBounds(frame.getWidth() / 2
+								- planeImage.getWidth(null) / 2 * j,
+								frame.getHeight() - planeImage.getHeight(null)
+										* 2, planeImage.getWidth(null),
+								planeImage.getHeight(null));
 						lblPlaneList[j].setVisible(false);
 						frame.getContentPane().add(lblPlaneList[j]);
-						for (int i = 0; i < numberOfMissile; i++) {
-							modelMissileList[j][i] = new MissileModel(0, 0, 0, 0,
-									"ready");
-							lblMissileList[j][i] = new JLabel("");
-							lblMissileList[j][i].setIcon(new ImageIcon(missileImage));
-							lblMissileList[j][i].setSize(missileImage.getWidth(null),
-									missileImage.getHeight(null));
-							lblMissileList[j][i].setVisible(false);
-							frame.getContentPane().add(lblMissileList[j][i]);
-						}
+//						for (int i = 0; i < numberOfMissile; i++) {
+////							modelMissileList[j][i] = new MissileModel(0, 0, 0,
+////									0, "ready");
+//							lblMissileList[j][i] = new JLabel("");
+//							lblMissileList[j][i].setIcon(new ImageIcon(
+//									missileImage));
+//							lblMissileList[j][i].setSize(
+//									missileImage.getWidth(null),
+//									missileImage.getHeight(null));
+//							lblMissileList[j][i].setVisible(false);
+//							frame.getContentPane().add(lblMissileList[j][i]);
+//						}
+						//TODO
+						lblMissile = new JLabel("");
+						lblMissile.setIcon(new ImageIcon(
+								missileImage));
+						lblMissile.setSize(
+								missileImage.getWidth(null),
+								missileImage.getHeight(null));
+						lblMissile.setVisible(false);
+//						frame.getContentPane().add(lblMissile);
+						
+						
 						for (int i = 0; i < numberOfEnemyPlane; i++) {
-							modelEnemyList[j][i] = new EnemyModel(0, 0, 0,0, "ready");
+							modelEnemyList[j][i] = new EnemyModel(0, 0, 0, 0,
+									"ready");
 							lblEnemyList[j][i] = new JLabel("");
-							lblEnemyList[j][i].setIcon(new ImageIcon(enemyImage));
-							lblEnemyList[j][i].setSize(enemyImage.getWidth(null),
+							lblEnemyList[j][i]
+									.setIcon(new ImageIcon(enemyImage));
+							lblEnemyList[j][i].setSize(
+									enemyImage.getWidth(null),
 									enemyImage.getHeight(null));
 							lblEnemyList[j][i].setVisible(false);
 							frame.getContentPane().add(lblEnemyList[j][i]);
 						}
 					}
-//displayGameLog("fasf"+Integer.toString(lblMissileList[0][0].getWidth())+Integer.toString(
-//								lblMissileList[0][0].getHeight()));
-//displayGameLog("fasf"+Integer.toString(lblEnemyList[0][0].getWidth())+Integer.toString(
-//		lblEnemyList[0][0].getHeight()));
-//					displayGameLog("player"+Integer.toString(lblPlaneList[0].getWidth())+Integer.toString(
-//							lblPlaneList[0].getHeight()));	
-					
-					updateLocalPlaneToServer();
-					
-					// get player index
-					while ((myPlayerID = inFromServer.readInt()) != -1) {
-						displayGameLog("My Player Index is " + myPlayerID);
-						// TODO
-//						modelPlaneList[myPlayerID].setX(modelPlaneLocal.getX());
-//						modelPlaneList[myPlayerID].setY(modelPlaneLocal.getY());
-//						modelPlaneList[myPlayerID].setStatus("playing");
-						modelPlaneLocal.setID(myPlayerID);
+//					 displayGameLog("fasf"+Integer.toString(lblMissile.getWidth())+Integer.toString(
+//					 lblMissile.getHeight()));
+					// displayGameLog("fasf"+Integer.toString(lblEnemyList[0][0].getWidth())+Integer.toString(
+					// lblEnemyList[0][0].getHeight()));
+					// displayGameLog("player"+Integer.toString(lblPlaneList[0].getWidth())+Integer.toString(
+					// lblPlaneList[0].getHeight()));
+
+					// updateLocalPlaneToServer(); //
+					int i;
+					while ((i = inFromServer.readInt()) != -1) {
+						byte[] planeModelFromServerInByte = new byte[i];
+						inFromServer.read(planeModelFromServerInByte);
+						modelPlaneLocal = Deserialize
+								.deserializePlaneModel(planeModelFromServerInByte);
+						myPlayerID = modelPlaneLocal.getID();
 						break;
 					}
+
+					// get player index
+					// while ((myPlayerID = inFromServer.readInt()) != -1) {
+					// displayGameLog("My Player Index is " + myPlayerID);
+					// // TODO
+					// //
+					// modelPlaneList[myPlayerID].setX(modelPlaneLocal.getX());
+					// //
+					// modelPlaneList[myPlayerID].setY(modelPlaneLocal.getY());
+					// // modelPlaneList[myPlayerID].setStatus("playing");
+					// modelPlaneLocal.setID(myPlayerID);
+					// break;
+					// }
 					frame.setTitle("Plane shooting gaem | player " + myPlayerID);
 					// label to display when dead
 					lblYouDie.setAlignmentX(Component.CENTER_ALIGNMENT);
 					lblYouDie.setForeground(Color.RED);
 					lblYouDie.setHorizontalTextPosition(SwingConstants.CENTER);
 					lblYouDie.setHorizontalAlignment(SwingConstants.CENTER);
-					lblYouDie.setFont(new Font("Times New Roman", Font.BOLD, 99));
+					lblYouDie
+							.setFont(new Font("Times New Roman", Font.BOLD, 99));
 					lblYouDie.setBounds(frame.getWidth() / 2 - 200,
 							frame.getHeight() / 2 - 100, 500, 200);
 					frame.getContentPane().add(lblYouDie);
 
 					lblYouDie.setVisible(false);
-
-					// mouse pressed = launch missile / Create missile
-					frame.getContentPane().addMouseListener(new MouseAdapter() {
-						@Override
-						public void mousePressed(final MouseEvent e) {
-							if (modelPlaneLocal.getStatus().equals("playing")) {
-								if (missileIndex < numberOfMissile) {
-//									displayGameLog("missileIndex lauched: "
-//											+ missileIndex);
-									modelMissileLocal.setPlayerID(myPlayerID);
-									modelMissileLocal.setID(missileIndex);
-									modelMissileLocal.setX(e.getX()-lblMissileList[0][0].getWidth()/2);
-									modelMissileLocal.setY(e.getY()
-											- lblPlaneList[myPlayerID].getHeight()
-											+ 50);
-									modelMissileLocal.setStatus("launched");
-									updateLocalMissileToServer();
-									missileIndex = missileIndex + 1;
-								} else {
-									displayGameLog("Run out of missile!");
-								}
-
-							}
-
-						}
-					});
-
-					// mouse moved and dragged = move plane
-					frame.getContentPane().addMouseMotionListener(
-							new MouseMotionAdapter() {
-								@Override
-								public void mouseMoved(MouseEvent e) {
-									if (modelPlaneList.get(modelPlaneList.indexOf(modelPlaneLocal)).getStatus().equals("playing")) {
-										modelPlaneLocal.setID(myPlayerID);
-										modelPlaneLocal.setX(e.getX()
-												- lblPlaneList[myPlayerID]
-														.getWidth() / 2);
-										modelPlaneLocal.setY(e.getY()
-												- lblPlaneList[myPlayerID]
-														.getHeight() / 2);
-										updateLocalPlaneToServer();
-									}
-								}
-
-								@Override
-								public void mouseDragged(MouseEvent e) {
-									if (modelPlaneLocal.getStatus().equals("playing")) {
-										modelPlaneLocal.setID(myPlayerID);
-										modelPlaneLocal.setX(e.getX()
-												- lblPlaneList[myPlayerID]
-														.getWidth() / 2);
-										modelPlaneLocal.setY(e.getY()
-												- lblPlaneList[myPlayerID]
-														.getHeight() / 2);
-										updateLocalPlaneToServer();
-									}
-								}
-							});
-
 					loadDataFromServer();
+					moveAndFire();
+
 					frame.setVisible(true);
 				} catch (IOException e2) {
 					frame.setCursor(Cursor.DEFAULT_CURSOR);
-					displayGameLog("Disable to connect to server: " + e2.getMessage());
+					displayGameLog("Disable to connect to server: "
+							+ e2.getMessage());
 					return;
 				}
 			}
 		});
-		
+
 		btnLocalhost = new JButton("Connect to localhost");
 		btnLocalhost.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				txtIpHere.setText("127.0.0.1");
 				btnConnect.doClick(100);
-			//	btnConnect.mou
+				// btnConnect.mou
 			}
 		});
 		btnLocalhost.setBounds(314, 102, 209, 29);
 		frame.getContentPane().add(btnLocalhost);
-		
+
 		btnConnect.setBounds(436, 188, 115, 29);
 		frame.getContentPane().add(btnConnect);
-		
-		
+
 		lblOrInputIp.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblOrInputIp.setBounds(305, 147, 228, 26);
 		frame.getContentPane().add(lblOrInputIp);
-		
-		
 
-//		txtIpHere.setVisible(true);
-//		btnConnect.setVisible(true);
-//		frame.setVisible(true);
+		// txtIpHere.setVisible(true);
+		// btnConnect.setVisible(true);
+		// frame.setVisible(true);
 		// while(ipOk != 1){
-	
 
 		// }
 
-		
+	}
+
+	public void moveAndFire() {
+//		while (modelPlaneList != null) {
+			// mouse pressed = launch missile / Create missile
+			frame.getContentPane().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(final MouseEvent e) {
+					if (modelPlaneLocal.getStatus().equals("playing")) {
+						if (missileIndex < numberOfMissile) {
+							// displayGameLog("missileIndex lauched: "
+							// + missileIndex);
+							modelMissileLocal.setPlayerID(myPlayerID);
+							modelMissileLocal.setID(missileIndex);
+							modelMissileLocal.setX(e.getX()
+									- missileWidthOrHeight / 2);
+							modelMissileLocal.setY(e.getY()
+									- lblPlaneList[myPlayerID].getHeight() + 50);
+							modelMissileLocal.setStatus("launched");
+							updateLocalMissileToServer();
+							missileIndex = missileIndex + 1;
+						} else {
+							displayGameLog("Run out of missile!");
+						}
+
+					}
+
+				}
+			});
+
+			// mouse moved and dragged = move plane
+			frame.getContentPane().addMouseMotionListener(
+					new MouseMotionAdapter() {
+						@Override
+						public void mouseMoved(MouseEvent e) {
+							if (modelPlaneLocal.getStatus()
+									.equals("playing")) {
+								modelPlaneLocal.setID(myPlayerID);
+								modelPlaneLocal.setX(e.getX()
+										- lblPlaneList[myPlayerID].getWidth()
+										/ 2);
+								modelPlaneLocal.setY(e.getY()
+										- lblPlaneList[myPlayerID].getHeight()
+										/ 2);
+								updateLocalPlaneToServer();
+							}
+						}
+
+						@Override
+						public void mouseDragged(MouseEvent e) {
+							if (modelPlaneLocal.getStatus().equals("playing")) {
+								modelPlaneLocal.setID(myPlayerID);
+								modelPlaneLocal.setX(e.getX()
+										- lblPlaneList[myPlayerID].getWidth()
+										/ 2);
+								modelPlaneLocal.setY(e.getY()
+										- lblPlaneList[myPlayerID].getHeight()
+										/ 2);
+								updateLocalPlaneToServer();
+							}
+						}
+					});
+//		}
 
 	}
 
@@ -329,26 +370,29 @@ public class Client {
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] planeModelListInByte = new byte[i];
 						inFromServer.read(planeModelListInByte);
-						modelPlaneList = Deserialize.deserializePlaneModelArrayList(planeModelListInByte);
+						modelPlaneList = Deserialize
+								.deserializePlaneModelArrayList(planeModelListInByte);
 						break;
 					}
 					outToServer.writeInt(5);
 					while ((i = inFromServer.readInt()) != 0) {
 						byte[] missileModelListInByte = new byte[i];
 						inFromServer.read(missileModelListInByte);
-						modelMissileList = Deserialize.deserializeMissileModelList(missileModelListInByte);
+						modelMissileList = Deserialize
+								.deserializeMissileModelArrayList(missileModelListInByte);
 						break;
 					}
-					outToServer.writeInt(6);
-					while ((i = inFromServer.readInt()) != 0) {
-						byte[] enemyModelListInByte = new byte[i];
-						inFromServer.read(enemyModelListInByte);
-						modelEnemyList = Deserialize.deserializeEnemyModelList(enemyModelListInByte);
-						break;
-					}
+					// outToServer.writeInt(6);
+					// while ((i = inFromServer.readInt()) != 0) {
+					// byte[] enemyModelListInByte = new byte[i];
+					// inFromServer.read(enemyModelListInByte);
+					// modelEnemyList =
+					// Deserialize.deserializeEnemyModelList(enemyModelListInByte);
+					// break;
+					// }
 					displayAllPlayers();
 					displayAllMissiles();
-					displayAllEnemies();
+					// displayAllEnemies();
 				} catch (IOException e) {
 					displayGameLog("st");
 					displayGameLog(e.getMessage());
@@ -359,9 +403,10 @@ public class Client {
 		};
 		new Timer(delay, taskPerformer).start();
 	}
-	static public int indexOfPlaneWithID(int ID){
-		for (PlaneModel planeModelInList : modelPlaneList){
-			if (planeModelInList.getID() == ID){
+
+	static public int indexOfPlaneWithID(int ID) {
+		for (PlaneModel planeModelInList : modelPlaneList) {
+			if (planeModelInList.getID() == ID) {
 				return ID;
 			}
 		}
@@ -369,81 +414,121 @@ public class Client {
 	}
 
 	public void displayAllPlayers() {
-		if (modelPlaneList!=null){
-//			modelPlaneLocal = modelPlaneList[myPlayerID];
-			modelPlaneLocal = modelPlaneList.get(indexOfPlaneWithID(myPlayerID));
-			for (PlaneModel planeModelInList : modelPlaneList){
+		if (modelPlaneList != null) {
+			modelPlaneLocal.setStatus(modelPlaneList.get(myPlayerID).getStatus());
+			// modelPlaneLocal = modelPlaneList[myPlayerID];
+			// modelPlaneLocal = modelPlaneList.get(myPlayerID);
+			for (PlaneModel planeModelInList : modelPlaneList) {
 				if (planeModelInList.getStatus().equals("dead")) {
 					if (planeModelInList.getID() == myPlayerID) {
 						lblYouDie.setVisible(true);
 					}
 					if (lblPlaneList[planeModelInList.getID()].isVisible()) {
-						displayGameLog("Player " + planeModelInList.getID() + " is dead.");
-						lblPlaneList[planeModelInList.getID()].setVisible(false);
+						displayGameLog("Player " + planeModelInList.getID()
+								+ " is dead.");
+						lblPlaneList[planeModelInList.getID()]
+								.setVisible(false);
 					}
 
-				} else if (modelPlaneList.get(indexOfPlaneWithID(planeModelInList.getID())).getStatus().equals("disconnected")&&lblPlaneList[planeModelInList.getID()].isVisible()) {
-					//String oldStatus = modelPlaneLocal.getStatus();
-					displayGameLog("Player " + planeModelInList.getID() + " disconnected.");
-//					modelPlaneLocal.setID(i);
-//					modelPlaneLocal.setStatus("dead");
-//					updateLocalPlaneToServer();
-//					modelPlaneLocal.setID(myPlayerID);
-//					modelPlaneLocal.setStatus(oldStatus);
+				} else if (modelPlaneList
+						.get(indexOfPlaneWithID(planeModelInList.getID()))
+						.getStatus().equals("disconnected")
+						&& lblPlaneList[planeModelInList.getID()].isVisible()) {
+					// String oldStatus = modelPlaneLocal.getStatus();
+					displayGameLog("Player " + planeModelInList.getID()
+							+ " disconnected.");
+					// modelPlaneLocal.setID(i);
+					// modelPlaneLocal.setStatus("dead");
+					// updateLocalPlaneToServer();
+					// modelPlaneLocal.setID(myPlayerID);
+					// modelPlaneLocal.setStatus(oldStatus);
 					lblPlaneList[planeModelInList.getID()].setVisible(false);
-				} else if (modelPlaneList.get(indexOfPlaneWithID(planeModelInList.getID())).getStatus().equals("playing")) {
+				} else if (modelPlaneList
+						.get(indexOfPlaneWithID(planeModelInList.getID()))
+						.getStatus().equals("playing")) {
 					displayOnePlayer(planeModelInList.getID());
 				}
 			}
-//			for (int i = 0; i < modelPlaneList.length; i++) {
-//				if (modelPlaneList[i].getStatus().equals("dead")) {
-//					if (i == myPlayerID) {
-//						lblYouDie.setVisible(true);
-//					}
-//					if (lblPlaneList[i].isVisible()) {
-//						displayGameLog("Player " + i + " is dead.");
-//						lblPlaneList[i].setVisible(false);
-//					}
-//
-//				} else if (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("disconnected")&&lblPlaneList[i].isVisible()) {
-//					//String oldStatus = modelPlaneLocal.getStatus();
-//					displayGameLog("Player " + i + " disconnected.");
-////					modelPlaneLocal.setID(i);
-////					modelPlaneLocal.setStatus("dead");
-////					updateLocalPlaneToServer();
-////					modelPlaneLocal.setID(myPlayerID);
-////					modelPlaneLocal.setStatus(oldStatus);
-//					lblPlaneList[i].setVisible(false);
-//				} else if (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("playing")) {
-//					displayOnePlayer(i);
-//				}
-//			}
+			// for (int i = 0; i < modelPlaneList.length; i++) {
+			// if (modelPlaneList[i].getStatus().equals("dead")) {
+			// if (i == myPlayerID) {
+			// lblYouDie.setVisible(true);
+			// }
+			// if (lblPlaneList[i].isVisible()) {
+			// displayGameLog("Player " + i + " is dead.");
+			// lblPlaneList[i].setVisible(false);
+			// }
+			//
+			// } else if
+			// (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("disconnected")&&lblPlaneList[i].isVisible())
+			// {
+			// //String oldStatus = modelPlaneLocal.getStatus();
+			// displayGameLog("Player " + i + " disconnected.");
+			// // modelPlaneLocal.setID(i);
+			// // modelPlaneLocal.setStatus("dead");
+			// // updateLocalPlaneToServer();
+			// // modelPlaneLocal.setID(myPlayerID);
+			// // modelPlaneLocal.setStatus(oldStatus);
+			// lblPlaneList[i].setVisible(false);
+			// } else if
+			// (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("playing"))
+			// {
+			// displayOnePlayer(i);
+			// }
+			// }
 		}
 	}
 
 	public void displayAllMissiles() {
+//		if (modelMissileList != null) {
+//			for (int j = 0; j < modelMissileList.size(); j++) {
+//				for (int i = 0; i < modelMissileList[j].length; i++) {
+//					if (modelMissileList[j][i].getStatus().equals("dead"))
+//						lblMissileList[j][i].setVisible(false);
+//					else if (modelMissileList[j][i].getStatus().equals(
+//							"launched")) {
+//						displayOneMissile(j, i);
+//					}
+//
+//				}
+//			}
+//		}
 		if (modelMissileList!=null){
-			for (int j = 0; j < modelMissileList.length; j++) {
-				for (int i = 0; i < modelMissileList[j].length; i++) {
-					if (modelMissileList[j][i].getStatus().equals("dead"))
-						lblMissileList[j][i].setVisible(false);
-					else if (modelMissileList[j][i].getStatus().equals("launched")){
-						displayOneMissile(j, i);
-					}
+			for (int i=0;i<modelMissileList.size();i++){
+				if (modelMissileList.get(i).getStatus().equals("dead")){
+//					lblMissileList[modelMissileList.get(i).getPlayerID()][modelMissileList.get(i).getID()].setVisible(false);
+				}else if (modelMissileList.get(i).getStatus().equals("launched")){
+					
+//					lblMissile = new JLabel("");
+//					lblMissile.setIcon(new ImageIcon(
+//							missileImage));
+//					lblMissile.setSize(
+//							missileImage.getWidth(null),
+//							missileImage.getHeight(null));
+//					lblMissile.setVisible(false);
+//					frame.getContentPane().add(lblMissile);
+					//TODO
+					modelMissileList.get(i).setLblMissile(lblMissile);
+					modelMissileList.get(i).getLblMissile().move(modelMissileList.get(i).getX(),modelMissileList.get(i).getY());
+					modelMissileList.get(i).getLblMissile().setVisible(true);
+					frame.getContentPane().add(modelMissileList.get(i).getLblMissile());
+//					modelMissileList.get(i).getLblMissile().setVisible(false);
+//					displayOneMissile(modelMissileList.get(i).getPlayerID(),modelMissileList.get(i).getID(),modelMissileList.get(i).getX(),modelMissileList.get(i).getY());
 
 				}
+					
+				
 			}
 		}
 	}
 
 	public void displayAllEnemies() {
-		if (modelEnemyList!=null){
+		if (modelEnemyList != null) {
 			for (int j = 0; j < modelEnemyList.length; j++) {
 				for (int i = 0; i < modelEnemyList[j].length; i++) {
 					if (modelEnemyList[j][i].getStatus().equals("dead"))
 						lblEnemyList[j][i].setVisible(false);
-					else if (modelEnemyList[j][i].getStatus().equals("created")
-							) {
+					else if (modelEnemyList[j][i].getStatus().equals("created")) {
 						displayOneEnemy(j, i);
 					}
 
@@ -456,21 +541,26 @@ public class Client {
 	public void displayOnePlayer(int i) {
 
 		lblPlaneList[i].setVisible(true);
-		lblPlaneList[i]
-				.move(modelPlaneList.get(indexOfPlaneWithID(i)).getX(), modelPlaneList.get(indexOfPlaneWithID(i)).getY());
+		lblPlaneList[i].move(modelPlaneList.get(indexOfPlaneWithID(i)).getX(),
+				modelPlaneList.get(indexOfPlaneWithID(i)).getY());
 	}
 
-	@SuppressWarnings("deprecation")
-	public void displayOneMissile(final int j, final int i) {
-		lblMissileList[j][i].setVisible(true);
-		lblMissileList[j][i].move(modelMissileList[j][i].getX(), modelMissileList[j][i].getY());
-	}
+//	@SuppressWarnings("deprecation")
+//	public void displayOneMissile(final int j, final int i, final int x, final int y) {
+////		lblMissileList[j][i].setVisible(true);
+////		lblMissileList[j][i].move(x,y);
+//		
+//
+////		modelMissileList.g
+//		lblMissile.setVisible(true);
+//		lblMissile.move(x,y);
+//	}
 
 	@SuppressWarnings("deprecation")
 	public void displayOneEnemy(final int j, final int i) {
-						lblEnemyList[j][i].setVisible(true);
-						lblEnemyList[j][i].move(modelEnemyList[j][i].getX(),
-								modelEnemyList[j][i].getY());
+		lblEnemyList[j][i].setVisible(true);
+		lblEnemyList[j][i].move(modelEnemyList[j][i].getX(),
+				modelEnemyList[j][i].getY());
 	}
 
 	public void updateLocalPlaneToServer() {
@@ -497,10 +587,6 @@ public class Client {
 			return;
 		}
 	}
-
-	
-
-	
 
 	public static void displayGameLog(String s) {
 		gameLog.setText(gameLog.getText() + s + "\n");
