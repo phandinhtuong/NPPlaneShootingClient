@@ -26,10 +26,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import directPlaying.testOneClient.EnemyModel;
+import directPlaying.testOneClient.MissileModel;
+import directPlaying.testOneClient.PlaneModel;
 import objectByteTransform.Deserialize;
-import testOneClient.EnemyModel;
-import testOneClient.MissileModel;
-import testOneClient.PlaneModel;
 
 public class Client {
 

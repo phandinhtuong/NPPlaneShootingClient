@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import directPlaying.refactorDataStructure.Client;
-import testOneClient.EnemyModel;
-import testOneClient.MissileModel;
-import testOneClient.PlaneModel;
+import directPlaying.testOneClient.EnemyModel;
+import directPlaying.testOneClient.MissileModel;
+import directPlaying.testOneClient.PlaneModel;
 import model.Player;
 import model.Room;
 import model.RoomList;

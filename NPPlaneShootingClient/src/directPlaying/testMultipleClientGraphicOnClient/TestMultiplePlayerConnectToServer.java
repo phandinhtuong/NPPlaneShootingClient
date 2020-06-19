@@ -28,12 +28,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
-import testOneClient.EnemyModel;
-import testOneClient.MissileModel;
-import testOneClient.PlaneModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import directPlaying.testOneClient.EnemyModel;
+import directPlaying.testOneClient.MissileModel;
+import directPlaying.testOneClient.PlaneModel;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 

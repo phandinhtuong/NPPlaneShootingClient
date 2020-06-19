@@ -1,4 +1,4 @@
-package testOneClient;
+package directPlaying.testOneClient;
 
 import java.awt.Color;
 import java.awt.Cursor;

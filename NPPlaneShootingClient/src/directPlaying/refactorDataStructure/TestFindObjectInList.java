@@ -2,7 +2,8 @@ package directPlaying.refactorDataStructure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import testOneClient.PlaneModel;
+
+import directPlaying.testOneClient.PlaneModel;
 
 public class TestFindObjectInList {
 	static ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();

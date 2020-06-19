@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import testOneClient.PlaneModel;
+import directPlaying.testOneClient.PlaneModel;
 
 public class DisplayAllPlayers {
 	final static Image planeImage = new ImageIcon(Client.getFrame().getClass()
