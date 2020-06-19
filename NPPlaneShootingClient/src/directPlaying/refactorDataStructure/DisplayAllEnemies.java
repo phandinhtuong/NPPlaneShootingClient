@@ -24,6 +24,9 @@ public class DisplayAllEnemies {
 
 				
 			}
+			for (int j = Client.modelEnemyList.size(); j < lblEnemyList.size();j++){
+				removedeadEnemyList(j);
+			}
 		}
 	}
 	public static void createEnemyList(int i){
@@ -46,6 +49,15 @@ public class DisplayAllEnemies {
 		
 	}
 	public static void deadEnemyList(int i){
+		if (lblEnemyList.size() > i && lblEnemyList.size() >= Client.modelEnemyList.size()){
+			lblEnemyList.get(i).setVisible(false);
+//			Client.getFrame().getContentPane().remove(lblEnemyList.get(i));
+//			Client.displayGameLog("lblEnemyList.size() before: "+lblEnemyList.size());
+//			lblEnemyList.remove(i);
+//			Client.displayGameLog("lblEnemyList.size() after: "+lblEnemyList.size());
+		}
+	}
+	public static void removedeadEnemyList(int i){
 		if (lblEnemyList.size() > i && lblEnemyList.size() >= Client.modelEnemyList.size()){
 			lblEnemyList.get(i).setVisible(false);
 			Client.getFrame().getContentPane().remove(lblEnemyList.get(i));
