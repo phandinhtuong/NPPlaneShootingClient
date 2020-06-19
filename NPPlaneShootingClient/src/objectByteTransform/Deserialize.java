@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import directPlaying.refactorDataStructure.Client;
 import testOneClient.EnemyModel;
@@ -100,33 +101,33 @@ public class Deserialize {
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static ArrayList<PlaneModel> deserializePlaneModelArrayList(byte[] data){
+	public static List<PlaneModel> deserializePlaneModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (ArrayList<PlaneModel>) is.readObject();
+			return (List<PlaneModel>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static ArrayList<MissileModel> deserializeMissileModelArrayList(byte[] data){
+	public static List<MissileModel> deserializeMissileModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (ArrayList<MissileModel>) is.readObject();
+			return (List<MissileModel>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static ArrayList<EnemyModel> deserializeEnemyModelArrayList(byte[] data){
+	public static List<EnemyModel> deserializeEnemyModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (ArrayList<EnemyModel>) is.readObject();
+			return (List<EnemyModel>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;

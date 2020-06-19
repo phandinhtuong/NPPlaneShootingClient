@@ -15,6 +15,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -63,15 +64,15 @@ public class Client {
 	// model list from server
 
 	// ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
-	static ArrayList<PlaneModel> modelPlaneList = null;
+	static List<PlaneModel> modelPlaneList = null;
 	// PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
 	
 //	MissileModel[][] modelMissileList = new MissileModel[numberOfPlayers][numberOfMissile];
-	static ArrayList<MissileModel> modelMissileList = new ArrayList<MissileModel>();
+	static List<MissileModel> modelMissileList = new ArrayList<MissileModel>();
 	
 	
 //	static EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
-	static ArrayList<EnemyModel> modelEnemyList = null;
+	static List<EnemyModel> modelEnemyList = null;
 	
 	// label to display the model list
 	static JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
