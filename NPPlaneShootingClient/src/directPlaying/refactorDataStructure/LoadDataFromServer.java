@@ -20,9 +20,13 @@ public class LoadDataFromServer {
 					Client.outToServer.writeInt(3);
 					while((i = Client.inFromServer.readInt()) != 0){
 //						Client.displayGameLog(i+"");
-						if (i==1){
-							Client.lblYouDie.setText("Victory!");
-							Client.lblYouDie.setVisible(true);
+						if (i==-1){
+//							Client.displayGameLog("0 enemies left.");
+							Client.displayNumberOfEnemiesLeft(0);
+							Client.displayCenterMessage("Victory!");
+						}else {
+//							Client.displayGameLog(i+" enemies left.");
+							Client.displayNumberOfEnemiesLeft(i);
 						}
 						break;
 					}

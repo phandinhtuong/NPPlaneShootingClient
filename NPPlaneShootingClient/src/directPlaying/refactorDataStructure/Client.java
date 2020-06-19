@@ -58,7 +58,9 @@ public class Client {
 	static int missileWidthOrHeight = 52;
 	
 
-	static JLabel lblYouDie = new JLabel("You die!"); // display when player dies
+	static JLabel lblCenterMessage = new JLabel(""); // display when player dies
+	static JLabel lblNumberOfEnemiesLeft = new JLabel(""); // display number of enemies left
+	static JLabel lblNumberOfMissilesLeft = new JLabel(""); // display number of missiles left
 	static JTextArea gameLog = new JTextArea(""); // display game log
 
 	// model list from server
@@ -245,17 +247,28 @@ public class Client {
 					// }
 					getFrame().setTitle("Plane shooting gaem | player " + myPlayerID);
 					// label to display when dead
-					lblYouDie.setAlignmentX(Component.CENTER_ALIGNMENT);
-					lblYouDie.setForeground(Color.RED);
-					lblYouDie.setHorizontalTextPosition(SwingConstants.CENTER);
-					lblYouDie.setHorizontalAlignment(SwingConstants.CENTER);
-					lblYouDie
+					lblCenterMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+					lblCenterMessage.setForeground(Color.RED);
+					lblCenterMessage.setHorizontalTextPosition(SwingConstants.CENTER);
+					lblCenterMessage.setHorizontalAlignment(SwingConstants.CENTER);
+					lblCenterMessage
 							.setFont(new Font("Times New Roman", Font.BOLD, 99));
-					lblYouDie.setBounds(getFrame().getWidth() / 2 - 200,
-							getFrame().getHeight() / 2 - 100, 500, 200);
-					getFrame().getContentPane().add(lblYouDie);
+					lblCenterMessage.setBounds(getFrame().getWidth() / 2 - 200,
+							getFrame().getHeight() / 2 - 100, 600, 200);
+					getFrame().getContentPane().add(lblCenterMessage);
 
-					lblYouDie.setVisible(false);
+					lblCenterMessage.setVisible(false);
+					
+					lblNumberOfEnemiesLeft.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+					lblNumberOfEnemiesLeft.setBounds(0,100,150,30);
+					getFrame().getContentPane().add(lblNumberOfEnemiesLeft);
+					lblNumberOfEnemiesLeft.setVisible(false);
+					
+					lblNumberOfMissilesLeft.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+					lblNumberOfMissilesLeft.setBounds(0,130,150,30);
+					getFrame().getContentPane().add(lblNumberOfMissilesLeft);
+					lblNumberOfMissilesLeft.setVisible(false);
+					
 					LoadDataFromServer.loadDataFromServer();
 					MovePlane.movePlane();
 					LaunchMissile.launchMissile();
@@ -310,7 +323,18 @@ public class Client {
 	public static void displayGameLog(String s) {
 		gameLog.setText(gameLog.getText() + s + "\n");
 	}
-
+	public static void displayNumberOfEnemiesLeft(int i){
+		lblNumberOfEnemiesLeft.setText(i+" enemies left");
+		lblNumberOfEnemiesLeft.setVisible(true);
+	}
+	public static void displayNumberOfMissilesLeft(int i){
+		lblNumberOfMissilesLeft.setText(i+" missiles left");
+		lblNumberOfMissilesLeft.setVisible(true);
+	}
+	public static void displayCenterMessage(String s){
+		lblCenterMessage.setText(s);
+		lblCenterMessage.setVisible(true);
+	}
 	public static JFrame getFrame() {
 		return frame;
 	}

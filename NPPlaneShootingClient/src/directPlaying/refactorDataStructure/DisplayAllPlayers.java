@@ -9,10 +9,12 @@ public class DisplayAllPlayers {
 					.getStatus());
 			// modelPlaneLocal = modelPlaneList[myPlayerID];
 			// modelPlaneLocal = modelPlaneList.get(myPlayerID);
+			int count = 0;
 			for (PlaneModel planeModelInList : Client.modelPlaneList) {
 				if (planeModelInList.getStatus().equals("dead")) {
+					count++;
 					if (planeModelInList.getID() == Client.myPlayerID) {
-						Client.lblYouDie.setVisible(true);
+						Client.displayCenterMessage("You die!");
 					}
 					if (Client.lblPlaneList[planeModelInList.getID()].isVisible()) {
 						Client.displayGameLog("Player " + planeModelInList.getID()
@@ -39,6 +41,9 @@ public class DisplayAllPlayers {
 						.getStatus().equals("playing")) {
 					displayOnePlayer(planeModelInList.getID());
 				}
+			}
+			if (count == Client.modelPlaneList.size()){
+				Client.displayCenterMessage("Game Over!");
 			}
 			// for (int i = 0; i < modelPlaneList.length; i++) {
 			// if (modelPlaneList[i].getStatus().equals("dead")) {

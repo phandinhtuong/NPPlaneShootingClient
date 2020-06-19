@@ -36,7 +36,7 @@ public class DisplayAllEnemies {
 			lblEnemy.setSize(enemyImage.getWidth(null), enemyImage.getHeight(null));
 			lblEnemy.setVisible(false);
 			lblEnemyList.add(lblEnemy);
-			Client.displayGameLog("Player "+Client.modelEnemyList.get(i).getPlayerID()+" has "+(Client.numberOfEnemies -Client.modelEnemyList.get(i).getID()-1)+" enemies left");
+//			Client.displayGameLog("Player "+Client.modelEnemyList.get(i).getPlayerID()+" has "+(Client.numberOfEnemies -Client.modelEnemyList.get(i).getID()-1)+" enemies left");
 			Client.getFrame().getContentPane().add(lblEnemyList.get(lblEnemyList.indexOf(lblEnemy)));
 			
 		}

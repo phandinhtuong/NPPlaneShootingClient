@@ -32,7 +32,8 @@ public class LaunchMissile {
 							updateLocalMissileToServer();
 							
 							Client.missileIndex = Client.missileIndex + 1;
-							Client.displayGameLog("You have "+(Client.numberOfMissiles-Client.missileIndex) +" missiles left!");
+//							Client.displayGameLog("You have "+(Client.numberOfMissiles-Client.missileIndex) +" missiles left!");
+							Client.displayNumberOfMissilesLeft(Client.numberOfMissiles-Client.missileIndex);
 						} else {
 							Client.displayGameLog("Run out of missile!");
 						}
