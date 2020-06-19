@@ -70,8 +70,9 @@ public class Client {
 	static ArrayList<MissileModel> modelMissileList = new ArrayList<MissileModel>();
 	
 	
-	static EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
-
+//	static EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
+	static ArrayList<EnemyModel> modelEnemyList = null;
+	
 	// label to display the model list
 	static JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
 	
@@ -80,8 +81,9 @@ public class Client {
 	//TODO
 	
 	
-	static JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
-
+//	static JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
+	
+	
 	// local model to send to server
 	// PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
 
@@ -114,8 +116,7 @@ public class Client {
 		
 		final Image planeImage = new ImageIcon(Client.getFrame().getClass().getResource("/plane1.png"))
 				.getImage();
-		final Image enemyImage = new ImageIcon(this.getClass().getResource(
-				"/enemyPlaneGraySmaller.png")).getImage();
+		
 		
 		
 		gameLog.setOpaque(false);
@@ -198,18 +199,18 @@ public class Client {
 //						frame.getContentPane().add(lblMissile);
 						
 						
-						for (int i = 0; i < numberOfEnemyPlane; i++) {
-							modelEnemyList[j][i] = new EnemyModel(0, 0, 0, 0,
-									"ready");
-							lblEnemyList[j][i] = new JLabel("");
-							lblEnemyList[j][i]
-									.setIcon(new ImageIcon(enemyImage));
-							lblEnemyList[j][i].setSize(
-									enemyImage.getWidth(null),
-									enemyImage.getHeight(null));
-							lblEnemyList[j][i].setVisible(false);
-							getFrame().getContentPane().add(lblEnemyList[j][i]);
-						}
+//						for (int i = 0; i < numberOfEnemyPlane; i++) {
+//							modelEnemyList[j][i] = new EnemyModel(0, 0, 0, 0,
+//									"ready");
+//							lblEnemyList[j][i] = new JLabel("");
+//							lblEnemyList[j][i]
+//									.setIcon(new ImageIcon(enemyImage));
+//							lblEnemyList[j][i].setSize(
+//									enemyImage.getWidth(null),
+//									enemyImage.getHeight(null));
+//							lblEnemyList[j][i].setVisible(false);
+//							getFrame().getContentPane().add(lblEnemyList[j][i]);
+//						}
 					}
 //					 displayGameLog("fasf"+Integer.toString(lblMissile.getWidth())+Integer.toString(
 //					 lblMissile.getHeight()));

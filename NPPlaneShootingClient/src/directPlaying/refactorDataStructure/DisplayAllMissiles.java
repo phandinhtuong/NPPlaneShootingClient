@@ -30,7 +30,7 @@ public class DisplayAllMissiles {
 	}
 
 	public static void launchMissileList(int i) {
-		if (lblMissileList.size() +1 == Client.modelMissileList.size()) {
+		if (lblMissileList.size() < Client.modelMissileList.size()) {
 			lblMissile = new JLabel("");
 			lblMissile.setIcon(new ImageIcon(missileImage));
 			lblMissile.setSize(missileImage.getWidth(null),
@@ -56,7 +56,7 @@ public class DisplayAllMissiles {
 
 	public static void deadMissileList(int i) {
 		if (lblMissileList.size() > i
-				&& lblMissileList.size() == Client.modelMissileList.size()) {
+				&& lblMissileList.size() >= Client.modelMissileList.size()) {
 			lblMissileList.get(i).setVisible(false);
 			Client.getFrame().getContentPane().remove(lblMissileList.get(i));
 			Client.displayGameLog("lblMissileList before: "

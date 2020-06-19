@@ -1,24 +1,57 @@
 package directPlaying.refactorDataStructure;
 
+import java.awt.Image;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 public class DisplayAllEnemies {
-	public void displayAllEnemies() {
+	static JLabel lblEnemy = null;
+	final static Image enemyImage = new ImageIcon(Client.getFrame().getClass().getResource(
+			"/enemyPlaneGraySmaller.png")).getImage();
+	static ArrayList<JLabel> lblEnemyList = new ArrayList<JLabel>();
+	public static void displayAllEnemies() {
 		if (Client.modelEnemyList != null) {
-			for (int j = 0; j < Client.modelEnemyList.length; j++) {
-				for (int i = 0; i < Client.modelEnemyList[j].length; i++) {
-					if (Client.modelEnemyList[j][i].getStatus().equals("dead"))
-						Client.lblEnemyList[j][i].setVisible(false);
-					else if (Client.modelEnemyList[j][i].getStatus().equals("created")) {
-						displayOneEnemy(j, i);
+			for (int i = 0; i < Client.modelEnemyList.size(); i++) {
+					if (Client.modelEnemyList.get(i).getStatus().equals("created"))
+						createEnemyList(i);
+					else if (Client.modelEnemyList.get(i).getStatus().equals("moving")) {
+						moveEnemyList(i);
+					} else if (Client.modelEnemyList.get(i).getStatus().equals("dead")){
+						deadEnemyList(i);
 					}
 
-				}
+				
 			}
 		}
 	}
+	public static void createEnemyList(int i){
+		if (lblEnemyList.size()<Client.modelEnemyList.size()){
+			lblEnemy = new JLabel("");
+			lblEnemy.setIcon(new ImageIcon(enemyImage));
+			lblEnemy.setSize(enemyImage.getWidth(null), enemyImage.getHeight(null));
+			lblEnemy.setVisible(false);
+			lblEnemyList.add(lblEnemy);
+			Client.getFrame().getContentPane().add(lblEnemyList.get(lblEnemyList.indexOf(lblEnemy)));
+			
+		}
+	}
 	@SuppressWarnings("deprecation")
-	public void displayOneEnemy(final int j, final int i) {
-		Client.lblEnemyList[j][i].setVisible(true);
-		Client.lblEnemyList[j][i].move(Client.modelEnemyList[j][i].getX(),
-				Client.modelEnemyList[j][i].getY());
+	public static void moveEnemyList(int i){
+		if (lblEnemyList.size() > i){
+			lblEnemyList.get(i).move(Client.modelEnemyList.get(i).getX(), Client.modelEnemyList.get(i).getY());
+			lblEnemyList.get(i).setVisible(true);
+		}
+		
+	}
+	public static void deadEnemyList(int i){
+		if (lblEnemyList.size() > i && lblEnemyList.size() >= Client.modelEnemyList.size()){
+			lblEnemyList.get(i).setVisible(false);
+			Client.getFrame().getContentPane().remove(lblEnemyList.get(i));
+			Client.displayGameLog("lblEnemyList.size() before: "+lblEnemyList.size());
+			lblEnemyList.remove(i);
+			Client.displayGameLog("lblEnemyList.size() after: "+lblEnemyList.size());
+		}
 	}
 }

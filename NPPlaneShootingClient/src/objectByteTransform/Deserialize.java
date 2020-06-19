@@ -99,6 +99,7 @@ public class Deserialize {
 			return null;
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public static ArrayList<PlaneModel> deserializePlaneModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
@@ -109,11 +110,23 @@ public class Deserialize {
 			return null;
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public static ArrayList<MissileModel> deserializeMissileModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
 			return (ArrayList<MissileModel>) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public static ArrayList<EnemyModel> deserializeEnemyModelArrayList(byte[] data){
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (ArrayList<EnemyModel>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;

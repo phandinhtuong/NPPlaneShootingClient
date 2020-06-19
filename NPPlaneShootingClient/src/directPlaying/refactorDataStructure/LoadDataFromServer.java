@@ -33,18 +33,18 @@ public class LoadDataFromServer {
 								.deserializeMissileModelArrayList(missileModelListInByte);
 						break;
 					}
-					// outToServer.writeInt(6);
-					// while ((i = inFromServer.readInt()) != 0) {
-					// byte[] enemyModelListInByte = new byte[i];
-					// inFromServer.read(enemyModelListInByte);
-					// modelEnemyList =
-					// Deserialize.deserializeEnemyModelList(enemyModelListInByte);
-					// break;
-					// }
+					 Client.outToServer.writeInt(6);
+					 while ((i = Client.inFromServer.readInt()) != 0) {
+					 byte[] enemyModelListInByte = new byte[i];
+					 Client.inFromServer.read(enemyModelListInByte);
+					 Client.modelEnemyList =
+					 Deserialize.deserializeEnemyModelArrayList(enemyModelListInByte);
+					 break;
+					 }
 //					Client.displayGameLog(Client.modelMissileList.g);
 					DisplayAllPlayers.displayAllPlayers();
 					DisplayAllMissiles.displayAllMissiles();
-					// displayAllEnemies();
+					DisplayAllEnemies.displayAllEnemies();
 				} catch (IOException e) {
 					Client.displayGameLog("st");
 					Client.displayGameLog(e.getMessage());
