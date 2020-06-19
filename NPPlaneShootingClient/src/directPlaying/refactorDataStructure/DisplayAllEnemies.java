@@ -36,6 +36,7 @@ public class DisplayAllEnemies {
 			lblEnemy.setSize(enemyImage.getWidth(null), enemyImage.getHeight(null));
 			lblEnemy.setVisible(false);
 			lblEnemyList.add(lblEnemy);
+			Client.displayGameLog("Player "+Client.modelEnemyList.get(i).getPlayerID()+" has "+(Client.numberOfEnemies -Client.modelEnemyList.get(i).getID()-1)+" enemies left");
 			Client.getFrame().getContentPane().add(lblEnemyList.get(lblEnemyList.indexOf(lblEnemy)));
 			
 		}
@@ -61,9 +62,9 @@ public class DisplayAllEnemies {
 		if (lblEnemyList.size() > i && lblEnemyList.size() >= Client.modelEnemyList.size()){
 			lblEnemyList.get(i).setVisible(false);
 			Client.getFrame().getContentPane().remove(lblEnemyList.get(i));
-			Client.displayGameLog("lblEnemyList.size() before: "+lblEnemyList.size());
+//			Client.displayGameLog("lblEnemyList.size() before: "+lblEnemyList.size());
 			lblEnemyList.remove(i);
-			Client.displayGameLog("lblEnemyList.size() after: "+lblEnemyList.size());
+//			Client.displayGameLog("lblEnemyList.size() after: "+lblEnemyList.size());
 		}
 	}
 }

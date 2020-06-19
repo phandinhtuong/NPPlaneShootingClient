@@ -50,8 +50,8 @@ public class Client {
 	}
 
 	static int missileIndex = 0;
-	static int numberOfMissile = 200;
-	static int numberOfEnemyPlane = 100;
+	static int numberOfMissiles = 400;
+	static int numberOfEnemies = 100;
 	static int myPlayerID = -1;
 	static int numberOfPlayers = 3;
 

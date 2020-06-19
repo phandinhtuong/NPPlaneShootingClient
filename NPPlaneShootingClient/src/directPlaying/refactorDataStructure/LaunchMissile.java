@@ -16,7 +16,7 @@ public class LaunchMissile {
 				@Override
 				public void mousePressed(final MouseEvent e) {
 					if (Client.modelPlaneLocal.getStatus().equals("playing")) {
-						if (Client.missileIndex < Client.numberOfMissile) {
+						if (Client.missileIndex < Client.numberOfMissiles) {
 							// displayGameLog("missileIndex lauched: "
 							// + missileIndex);
 							Client.modelMissileLocal.setPlayerID(Client.myPlayerID);
@@ -30,7 +30,9 @@ public class LaunchMissile {
 							
 //							DisplayAllMissiles.lblMissileList.ad
 							updateLocalMissileToServer();
+							
 							Client.missileIndex = Client.missileIndex + 1;
+							Client.displayGameLog("You have "+(Client.numberOfMissiles-Client.missileIndex) +" missiles left!");
 						} else {
 							Client.displayGameLog("Run out of missile!");
 						}

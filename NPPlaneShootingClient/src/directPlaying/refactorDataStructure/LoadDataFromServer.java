@@ -17,6 +17,15 @@ public class LoadDataFromServer {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
+					Client.outToServer.writeInt(3);
+					while((i = Client.inFromServer.readInt()) != 0){
+//						Client.displayGameLog(i+"");
+						if (i==1){
+							Client.lblYouDie.setText("Victory!");
+							Client.lblYouDie.setVisible(true);
+						}
+						break;
+					}
 					Client.outToServer.writeInt(4);
 					while ((i = Client.inFromServer.readInt()) != 0) {
 						byte[] planeModelListInByte = new byte[i];

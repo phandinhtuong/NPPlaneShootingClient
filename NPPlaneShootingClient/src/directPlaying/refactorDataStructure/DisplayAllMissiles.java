@@ -75,11 +75,11 @@ public class DisplayAllMissiles {
 				&& lblMissileList.size() >= Client.modelMissileList.size()) {
 			lblMissileList.get(i).setVisible(false);
 			Client.getFrame().getContentPane().remove(lblMissileList.get(i));
-			Client.displayGameLog("lblMissileList before: "
-					+ lblMissileList.size());
+//			Client.displayGameLog("lblMissileList before: "
+//					+ lblMissileList.size());
 			lblMissileList.remove(i);
-			Client.displayGameLog("lblMissileList after: "
-					+ lblMissileList.size());
+//			Client.displayGameLog("lblMissileList after: "
+//					+ lblMissileList.size());
 		}
 
 	}
