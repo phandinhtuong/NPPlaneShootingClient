@@ -53,14 +53,14 @@ public class Client {
 	static int numberOfMissiles = 400;
 	static int numberOfEnemies = 100;
 	static int myPlayerID = -1;
-	static int numberOfPlayers = 3;
+//	static int numberOfPlayers = 3;
 
 	static int missileWidthOrHeight = 52;
 	
 
 	static JLabel lblCenterMessage = new JLabel(""); // display when player dies
 	static JLabel lblNumberOfEnemiesLeft = new JLabel(""); // display number of enemies left
-	static JLabel lblNumberOfMissilesLeft = new JLabel(""); // display number of missiles left
+	static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles+" missiles left"); // display number of missiles left
 	static JTextArea gameLog = new JTextArea(""); // display game log
 
 	// model list from server
@@ -77,7 +77,8 @@ public class Client {
 	static List<EnemyModel> modelEnemyList = null;
 	
 	// label to display the model list
-	static JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
+//	static JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
+	
 	
 //	JLabel[][] lblMissileList = new JLabel[numberOfPlayers][numberOfMissile];
 //	static JLabel lblMissile = new JLabel();
@@ -116,10 +117,6 @@ public class Client {
 		getFrame().getContentPane().setLayout(null);
 		
 		// Load images
-		
-		final Image planeImage = new ImageIcon(Client.getFrame().getClass().getResource("/plane1.png"))
-				.getImage();
-		
 		
 		
 		gameLog.setOpaque(false);
@@ -164,21 +161,21 @@ public class Client {
 							.getOutputStream());
 
 					// Initial all models and label
-					for (int j = 0; j < numberOfPlayers; j++) {
+//					for (int j = 0; j < numberOfPlayers; j++) {
 
 						// Initial modelPlaneList
 						// modelPlaneList[j] = new PlaneModel(j, 0, 0,
 						// "waiting");
 
-						lblPlaneList[j] = new JLabel("");
-						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
-						lblPlaneList[j].setBounds(getFrame().getWidth() / 2
-								- planeImage.getWidth(null) / 2 * j,
-								getFrame().getHeight() - planeImage.getHeight(null)
-										* 2, planeImage.getWidth(null),
-								planeImage.getHeight(null));
-						lblPlaneList[j].setVisible(false);
-						getFrame().getContentPane().add(lblPlaneList[j]);
+//						lblPlaneList[j] = new JLabel("");
+//						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
+//						lblPlaneList[j].setBounds(getFrame().getWidth() / 2
+//								- planeImage.getWidth(null) / 2 * j,
+//								getFrame().getHeight() - planeImage.getHeight(null)
+//										* 2, planeImage.getWidth(null),
+//								planeImage.getHeight(null));
+//						lblPlaneList[j].setVisible(false);
+//						getFrame().getContentPane().add(lblPlaneList[j]);
 //						for (int i = 0; i < numberOfMissile; i++) {
 ////							modelMissileList[j][i] = new MissileModel(0, 0, 0,
 ////									0, "ready");
@@ -214,7 +211,7 @@ public class Client {
 //							lblEnemyList[j][i].setVisible(false);
 //							getFrame().getContentPane().add(lblEnemyList[j][i]);
 //						}
-					}
+//					}
 //					 displayGameLog("fasf"+Integer.toString(lblMissile.getWidth())+Integer.toString(
 //					 lblMissile.getHeight()));
 					// displayGameLog("fasf"+Integer.toString(lblEnemyList[0][0].getWidth())+Integer.toString(
@@ -253,7 +250,7 @@ public class Client {
 					lblCenterMessage.setHorizontalAlignment(SwingConstants.CENTER);
 					lblCenterMessage
 							.setFont(new Font("Times New Roman", Font.BOLD, 99));
-					lblCenterMessage.setBounds(getFrame().getWidth() / 2 - 200,
+					lblCenterMessage.setBounds(getFrame().getWidth() / 2 - 300,
 							getFrame().getHeight() / 2 - 100, 600, 200);
 					getFrame().getContentPane().add(lblCenterMessage);
 
@@ -267,7 +264,7 @@ public class Client {
 					lblNumberOfMissilesLeft.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 					lblNumberOfMissilesLeft.setBounds(0,130,150,30);
 					getFrame().getContentPane().add(lblNumberOfMissilesLeft);
-					lblNumberOfMissilesLeft.setVisible(false);
+//					lblNumberOfMissilesLeft.setVisible(false);
 					
 					LoadDataFromServer.loadDataFromServer();
 					MovePlane.movePlane();

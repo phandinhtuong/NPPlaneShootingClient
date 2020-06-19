@@ -14,13 +14,15 @@ public class MovePlane {
 					@Override
 					public void mouseMoved(MouseEvent e) {
 						if (Client.modelPlaneLocal.getStatus()
-								.equals("playing")) {
+								.equals("playing") && DisplayAllPlayers.lblPlaneList.size()>0) {
 							Client.modelPlaneLocal.setID(Client.myPlayerID);
 							Client.modelPlaneLocal.setX(e.getX()
-									- Client.lblPlaneList[Client.myPlayerID].getWidth()
+									- DisplayAllPlayers.lblPlaneList.get(Client.myPlayerID).getWidth()
+//									- Client.lblPlaneList[Client.myPlayerID].getWidth()
 									/ 2);
 							Client.modelPlaneLocal.setY(e.getY()
-									- Client.lblPlaneList[Client.myPlayerID].getHeight()
+									- DisplayAllPlayers.lblPlaneList.get(Client.myPlayerID).getHeight()
+//									- Client.lblPlaneList[Client.myPlayerID].getHeight()
 									/ 2);
 							updateLocalPlaneToServer();
 						}
@@ -28,13 +30,15 @@ public class MovePlane {
 
 					@Override
 					public void mouseDragged(MouseEvent e) {
-						if (Client.modelPlaneLocal.getStatus().equals("playing")) {
+						if (Client.modelPlaneLocal.getStatus().equals("playing") && DisplayAllPlayers.lblPlaneList.size()>0) {
 							Client.modelPlaneLocal.setID(Client.myPlayerID);
 							Client.modelPlaneLocal.setX(e.getX()
-									- Client.lblPlaneList[Client.myPlayerID].getWidth()
+//									- Client.lblPlaneList[Client.myPlayerID].getWidth()
+									- DisplayAllPlayers.lblPlaneList.get(Client.myPlayerID).getWidth()
 									/ 2);
 							Client.modelPlaneLocal.setY(e.getY()
-									- Client.lblPlaneList[Client.myPlayerID].getHeight()
+//									- Client.lblPlaneList[Client.myPlayerID].getHeight()
+									- DisplayAllPlayers.lblPlaneList.get(Client.myPlayerID).getHeight()
 									/ 2);
 							updateLocalPlaneToServer();
 						}

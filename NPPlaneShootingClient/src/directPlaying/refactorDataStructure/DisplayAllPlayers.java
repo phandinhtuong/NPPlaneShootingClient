@@ -1,14 +1,25 @@
 package directPlaying.refactorDataStructure;
 
+import java.awt.Image;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import testOneClient.PlaneModel;
 
 public class DisplayAllPlayers {
+	final static Image planeImage = new ImageIcon(Client.getFrame().getClass()
+			.getResource("/plane1.png")).getImage();
+	static int planeWidth = 86;
+	static int planeHeight = 84;
+
+	static ArrayList<JLabel> lblPlaneList = new ArrayList<JLabel>();
+
 	public static void displayAllPlayers() {
 		if (Client.modelPlaneList != null) {
-			Client.modelPlaneLocal.setStatus(Client.modelPlaneList.get(Client.myPlayerID)
-					.getStatus());
-			// modelPlaneLocal = modelPlaneList[myPlayerID];
-			// modelPlaneLocal = modelPlaneList.get(myPlayerID);
+			Client.modelPlaneLocal.setStatus(Client.modelPlaneList.get(
+					Client.myPlayerID).getStatus());
 			int count = 0;
 			for (PlaneModel planeModelInList : Client.modelPlaneList) {
 				if (planeModelInList.getStatus().equals("dead")) {
@@ -16,69 +27,54 @@ public class DisplayAllPlayers {
 					if (planeModelInList.getID() == Client.myPlayerID) {
 						Client.displayCenterMessage("You die!");
 					}
-					if (Client.lblPlaneList[planeModelInList.getID()].isVisible()) {
-						Client.displayGameLog("Player " + planeModelInList.getID()
-								+ " is dead.");
-						Client.lblPlaneList[planeModelInList.getID()]
-								.setVisible(false);
+					if (lblPlaneList.get(planeModelInList.getID()).isVisible()) {
+						Client.displayGameLog("Player "
+								+ planeModelInList.getID() + " is dead.");
+						lblPlaneList.get(planeModelInList.getID()).setVisible(
+								false);
 					}
-
 				} else if (Client.modelPlaneList
 						.get(Client.indexOfPlaneWithID(planeModelInList.getID()))
 						.getStatus().equals("disconnected")
-						&& Client.lblPlaneList[planeModelInList.getID()].isVisible()) {
+						&& lblPlaneList.get(planeModelInList.getID())
+								.isVisible()) {
 					// String oldStatus = modelPlaneLocal.getStatus();
 					Client.displayGameLog("Player " + planeModelInList.getID()
 							+ " disconnected.");
-					// modelPlaneLocal.setID(i);
-					// modelPlaneLocal.setStatus("dead");
-					// updateLocalPlaneToServer();
-					// modelPlaneLocal.setID(myPlayerID);
-					// modelPlaneLocal.setStatus(oldStatus);
-					Client.lblPlaneList[planeModelInList.getID()].setVisible(false);
+					lblPlaneList.get(planeModelInList.getID())
+							.setVisible(false);
 				} else if (Client.modelPlaneList
 						.get(Client.indexOfPlaneWithID(planeModelInList.getID()))
 						.getStatus().equals("playing")) {
 					displayOnePlayer(planeModelInList.getID());
 				}
 			}
-			if (count == Client.modelPlaneList.size()){
+			if (count == Client.modelPlaneList.size()) {
 				Client.displayCenterMessage("Game Over!");
 			}
-			// for (int i = 0; i < modelPlaneList.length; i++) {
-			// if (modelPlaneList[i].getStatus().equals("dead")) {
-			// if (i == myPlayerID) {
-			// lblYouDie.setVisible(true);
-			// }
-			// if (lblPlaneList[i].isVisible()) {
-			// displayGameLog("Player " + i + " is dead.");
-			// lblPlaneList[i].setVisible(false);
-			// }
-			//
-			// } else if
-			// (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("disconnected")&&lblPlaneList[i].isVisible())
-			// {
-			// //String oldStatus = modelPlaneLocal.getStatus();
-			// displayGameLog("Player " + i + " disconnected.");
-			// // modelPlaneLocal.setID(i);
-			// // modelPlaneLocal.setStatus("dead");
-			// // updateLocalPlaneToServer();
-			// // modelPlaneLocal.setID(myPlayerID);
-			// // modelPlaneLocal.setStatus(oldStatus);
-			// lblPlaneList[i].setVisible(false);
-			// } else if
-			// (modelPlaneList.get(indexOfPlaneWithID(i)).getStatus().equals("playing"))
-			// {
-			// displayOnePlayer(i);
-			// }
-			// }
 		}
 	}
+
 	@SuppressWarnings("deprecation")
 	public static void displayOnePlayer(int i) {
-
-		Client.lblPlaneList[i].setVisible(true);
-		Client.lblPlaneList[i].move(Client.modelPlaneList.get(Client.indexOfPlaneWithID(i)).getX(),
-				Client.modelPlaneList.get(Client.indexOfPlaneWithID(i)).getY());
+		if (lblPlaneList.size() < Client.modelPlaneList.size()) {
+			JLabel lblPlane = new JLabel("");
+			lblPlane.setIcon(new ImageIcon(planeImage));
+			lblPlane.setBounds(Client.getFrame().getWidth() / 2 - planeWidth
+					/ 2 * i, Client.getFrame().getHeight() - planeHeight * 2,
+					planeWidth, planeHeight);
+			lblPlane.setVisible(false);
+			lblPlaneList.add(lblPlane);
+			lblPlaneList.get(i).setVisible(true);
+			Client.getFrame().getContentPane()
+					.add(lblPlaneList.get(lblPlaneList.indexOf(lblPlane)));
+		} else {
+			lblPlaneList.get(i).move(
+					Client.modelPlaneList.get(Client.indexOfPlaneWithID(i))
+							.getX(),
+					Client.modelPlaneList.get(Client.indexOfPlaneWithID(i))
+							.getY());
+			lblPlaneList.get(i).setVisible(true);
+		}
 	}
 }

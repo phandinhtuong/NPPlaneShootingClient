@@ -15,7 +15,7 @@ public class LaunchMissile {
 			Client.getFrame().getContentPane().addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(final MouseEvent e) {
-					if (Client.modelPlaneLocal.getStatus().equals("playing")) {
+					if (Client.modelPlaneLocal.getStatus().equals("playing") && DisplayAllPlayers.lblPlaneList.size()>0) {
 						if (Client.missileIndex < Client.numberOfMissiles) {
 							// displayGameLog("missileIndex lauched: "
 							// + missileIndex);
@@ -24,7 +24,7 @@ public class LaunchMissile {
 							Client.modelMissileLocal.setX(e.getX()
 									- Client.missileWidthOrHeight / 2);
 							Client.modelMissileLocal.setY(e.getY()
-									- Client.lblPlaneList[Client.myPlayerID].getHeight() + 50);
+									- DisplayAllPlayers.planeHeight + 50);
 							Client.modelMissileLocal.setStatus("launched");
 							
 							
