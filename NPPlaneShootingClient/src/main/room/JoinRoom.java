@@ -118,7 +118,7 @@ public class JoinRoom {
 						if (playerListFromServer.get(i).getID()== Main.myPlaneID){
 							thisPlaneStillInThisRoom=1;
 						}
-						if(playerListFromServer.get(i).getStatus().equals("ready")){
+						if(playerListFromServer.get(i).getStatus().equals("ready")||playerListFromServer.get(i).getStatus().equals("playing")){
 							numberOfPlayersReady++;
 						}
 

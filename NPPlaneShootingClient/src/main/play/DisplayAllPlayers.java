@@ -94,7 +94,7 @@ public class DisplayAllPlayers {
 			lblPlane.setVisible(false);
 			//add new plane label to plane label list
 			lblPlaneList.add(lblPlane);
-			lblPlaneList.get(i).setVisible(true);
+			lblPlaneList.get(lblPlaneList.indexOf(lblPlane)).setVisible(true);
 			//add new plane label to client frame
 			Main.getFrame().getContentPane()
 					.add(lblPlaneList.get(lblPlaneList.indexOf(lblPlane)));
