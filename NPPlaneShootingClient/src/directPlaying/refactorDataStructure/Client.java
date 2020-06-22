@@ -105,9 +105,6 @@ public class Client {
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getFrame().getContentPane().setLayout(null);
 		
-		// Load images
-		
-		
 		gameLog.setOpaque(false);
 		gameLog.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// frame.setCursor(frame.getToolkit().createCustomCursor(

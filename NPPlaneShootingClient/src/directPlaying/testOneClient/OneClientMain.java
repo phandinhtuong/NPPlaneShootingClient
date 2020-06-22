@@ -8,7 +8,6 @@ import java.net.Socket;
 import javax.swing.JFrame;
 
 import model.Player;
-import view.Home;
 
 public class OneClientMain {
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -34,8 +33,8 @@ public class OneClientMain {
 			fromServer = inFromServer.readLine();
 			// System.out.println("FROM SERVER: " + fromServer);
 			frame = new JFrame();
-			Player player = new Player(fromServer);
-			Home home = new Home(inFromServer, outToServer, player, frame);
+//			Player player = new Player(fromServer);
+//			Home home = new Home(inFromServer, outToServer, player, frame);
 			// home.displayHome(fromServer, frame);
 			// clientSocket.close();
 		} catch (IOException e) {

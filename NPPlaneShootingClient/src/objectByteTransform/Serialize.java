@@ -9,17 +9,11 @@ import directPlaying.refactorDataStructure.Client;
 import directPlaying.testOneClient.EnemyModel;
 import directPlaying.testOneClient.MissileModel;
 import directPlaying.testOneClient.PlaneModel;
+import model.Missile;
 import model.Player;
 import model.Room;
-import model.RoomList;
 
 public class Serialize {
-	public static byte[] serialize(RoomList roomList) throws IOException{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    ObjectOutputStream os = new ObjectOutputStream(out);
-	    os.writeObject(roomList);
-		return out.toByteArray();
-	}
 	public static byte[] serialize(Room room) throws IOException{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    ObjectOutputStream os = new ObjectOutputStream(out);
@@ -44,7 +38,7 @@ public class Serialize {
 		}
 	}
 
-	public static byte[] serialize(MissileModel missileModel) {
+	public static byte[] serialize(Missile missileModel) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			ObjectOutputStream os = new ObjectOutputStream(out);

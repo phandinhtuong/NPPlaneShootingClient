@@ -3,22 +3,17 @@ package objectByteTransform;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
+import model.Enemy;
+import model.Missile;
+import model.Player;
+import model.Room;
 import directPlaying.refactorDataStructure.Client;
 import directPlaying.testOneClient.EnemyModel;
 import directPlaying.testOneClient.MissileModel;
 import directPlaying.testOneClient.PlaneModel;
-import model.Player;
-import model.Room;
-import model.RoomList;
 public class Deserialize {
-	public static RoomList deserializeRoomList(byte[] data) throws IOException, ClassNotFoundException{
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-	    ObjectInputStream is = new ObjectInputStream(in);
-	    return (RoomList) is.readObject();
-	}
 	public static String deserializeString(byte[] data) throws IOException, ClassNotFoundException{
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 	    ObjectInputStream is = new ObjectInputStream(in);
@@ -101,33 +96,44 @@ public class Deserialize {
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static List<PlaneModel> deserializePlaneModelArrayList(byte[] data){
+	public static List<Player> deserializePlaneModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (List<PlaneModel>) is.readObject();
+			return (List<Player>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static List<MissileModel> deserializeMissileModelArrayList(byte[] data){
+	public static List<Missile> deserializeMissileModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (List<MissileModel>) is.readObject();
+			return (List<Missile>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static List<EnemyModel> deserializeEnemyModelArrayList(byte[] data){
+	public static List<Enemy> deserializeEnemyModelArrayList(byte[] data){
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		try {
 			ObjectInputStream is = new ObjectInputStream(in);
-			return (List<EnemyModel>) is.readObject();
+			return (List<Enemy>) is.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			Client.displayGameLog(e.getMessage());
+			return null;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public static List<Room> deserializeRoomModelArrayList(byte[] data){
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		try {
+			ObjectInputStream is = new ObjectInputStream(in);
+			return (List<Room>) is.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			Client.displayGameLog(e.getMessage());
 			return null;
