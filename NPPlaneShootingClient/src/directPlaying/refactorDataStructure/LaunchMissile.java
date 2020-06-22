@@ -4,9 +4,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import directPlaying.testOneClient.MissileModel;
 import objectByteTransform.Serialize;
 
 public class LaunchMissile {
+	static MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
 	public static void launchMissile() {
 		
 		
@@ -19,13 +21,13 @@ public class LaunchMissile {
 						if (Client.missileIndex < Client.numberOfMissiles) {
 							// displayGameLog("missileIndex lauched: "
 							// + missileIndex);
-							Client.modelMissileLocal.setPlayerID(Client.myPlayerID);
-							Client.modelMissileLocal.setID(Client.missileIndex);
-							Client.modelMissileLocal.setX(e.getX()
+							modelMissileLocal.setPlayerID(Client.myPlaneID);
+							modelMissileLocal.setID(Client.missileIndex);
+							modelMissileLocal.setX(e.getX()
 									- Client.missileWidthOrHeight / 2);
-							Client.modelMissileLocal.setY(e.getY()
+							modelMissileLocal.setY(e.getY()
 									- DisplayAllPlayers.planeHeight + 50);
-							Client.modelMissileLocal.setStatus("launched");
+							modelMissileLocal.setStatus("launched");
 							
 							
 //							DisplayAllMissiles.lblMissileList.ad
@@ -51,7 +53,7 @@ public class LaunchMissile {
 	
 
 	public static void updateLocalMissileToServer() {
-		byte[] missileModelInByte = Serialize.serialize(Client.modelMissileLocal);
+		byte[] missileModelInByte = Serialize.serialize(modelMissileLocal);
 		try {
 			Client.outToServer.writeInt(2);
 			Client.outToServer.writeInt(missileModelInByte.length);

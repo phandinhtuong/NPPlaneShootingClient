@@ -77,7 +77,7 @@ public class Client {
 	JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
 
 	// local model to send to server
-	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
+	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing",0);
 	MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
 	
 
@@ -143,7 +143,7 @@ public class Client {
 					outToServer = new DataOutputStream(clientSocket.getOutputStream());
 					// Initial all models and label
 					for (int j = 0; j < numberOfPlayers; j++) {
-						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting");
+						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting",0);
 						lblPlaneList[j] = new JLabel("");
 						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
 						lblPlaneList[j].setBounds(
@@ -184,7 +184,6 @@ public class Client {
 					// get player index
 					while ((myPlayerID = inFromServer.readInt()) != -1) {
 						displayGameLog("My Player Index is " + myPlayerID);
-						// TODO
 						modelPlaneList[myPlayerID].setX(modelPlaneLocal.getX());
 						modelPlaneList[myPlayerID].setY(modelPlaneLocal.getY());
 						modelPlaneList[myPlayerID].setStatus("playing");

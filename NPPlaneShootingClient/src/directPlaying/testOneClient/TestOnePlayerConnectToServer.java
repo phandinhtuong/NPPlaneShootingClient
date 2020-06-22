@@ -84,7 +84,7 @@ public class TestOnePlayerConnectToServer {
 
 	JLabel[] missileList = new JLabel[numberOfMissile];
 
-	PlaneModel planeModel = new PlaneModel(0,0, 0,"playing");
+	PlaneModel planeModel = new PlaneModel(0,0, 0,"playing",0);
 	MissileModel missileModel = new MissileModel(0,0, 0, 0,"ready");
 	EnemyModel enemyModel = new EnemyModel(0,0,0,0,"ready");
 	@SuppressWarnings("resource")

@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,10 +13,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,13 +23,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import objectByteTransform.Deserialize;
 import directPlaying.testOneClient.EnemyModel;
 import directPlaying.testOneClient.MissileModel;
 import directPlaying.testOneClient.PlaneModel;
-import objectByteTransform.Deserialize;
 
 public class Client {
-
+	// client frame 
 	private static JFrame frame;
 
 	public static void main(String[] args) {
@@ -46,64 +43,56 @@ public class Client {
 	}
 
 	public Client() {
+		//initialize client
 		initialize();
 	}
-
+	// this plane's missile index
 	static int missileIndex = 0;
+	//number of missiles of each plane
 	static int numberOfMissiles = 400;
-//	static int numberOfEnemies = 100;
-	static int myPlayerID = -1;
-//	static int numberOfPlayers = 3;
-
+	// this plane's index
+	static int myPlaneID = -1;
+	//missile's width or height
 	static int missileWidthOrHeight = 52;
 	
+	// display when player dies
+	static JLabel lblCenterMessage = new JLabel(""); 
+	// display number of enemies left
+	static JLabel lblNumberOfEnemiesLeft = new JLabel(""); 
+	// display number of missiles left
+	static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles+" missiles left"); 
+	//display score of this plane
+	static JLabel lblScore = new JLabel("Score: 0"); 
+	// display game log
+	static JTextArea gameLog = new JTextArea(""); 
 
-	static JLabel lblCenterMessage = new JLabel(""); // display when player dies
-	static JLabel lblNumberOfEnemiesLeft = new JLabel(""); // display number of enemies left
-	static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles+" missiles left"); // display number of missiles left
-	static JTextArea gameLog = new JTextArea(""); // display game log
+	// model lists from server
 
-	// model list from server
-
-	// ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
+	// model plane list - get from server to display all planes
 	static List<PlaneModel> modelPlaneList = null;
-	// PlaneModel[] modelPlaneList = new PlaneModel[numberOfPlayers];
 	
-//	MissileModel[][] modelMissileList = new MissileModel[numberOfPlayers][numberOfMissile];
-	static List<MissileModel> modelMissileList = new ArrayList<MissileModel>();
+	// model missile list - get from server to display all missiles
+	static List<MissileModel> modelMissileList = null;
 	
 	
-//	static EnemyModel[][] modelEnemyList = new EnemyModel[numberOfPlayers][numberOfEnemyPlane];
+	// model enemy list - get from server to display all enemies
 	static List<EnemyModel> modelEnemyList = null;
-	
-	// label to display the model list
-//	static JLabel[] lblPlaneList = new JLabel[numberOfPlayers];
-	
-	
-//	JLabel[][] lblMissileList = new JLabel[numberOfPlayers][numberOfMissile];
-//	static JLabel lblMissile = new JLabel();
-	//TODO
-	
-	
-//	static JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
-	
-	
-	// local model to send to server
-	// PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
-
+		
+	// local model to send to server - use this model to move, launch missile
 	static PlaneModel modelPlaneLocal = null;
-	static MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
 
-	// String ip = "127.0.0.1";
+	//IP address of server to connect
 	String ip = "";
-	// /String ip = "192.168.31.153";
-
-	int ipOk = 0;
-
+	
+	//port of the server is 6789
 	int port = 6789;
+	//socket to connect to server
 	Socket clientSocket;
+	//data input stream to get data from server
 	static DataInputStream inFromServer;
+	//data output stream to send data to server
 	static DataOutputStream outToServer;
+	//text field to input IP address of server
 	private JTextField txtIpHere;
 	private JButton btnLocalhost;
 
@@ -148,7 +137,7 @@ public class Client {
 				// displayGameLog(Integer.toString((e.getID())));
 				ip = txtIpHere.getText();
 				displayGameLog("Connected to server IP: " + ip);
-				ipOk = 1;
+//				ipOk = 1;
 				txtIpHere.setVisible(false);
 				btnConnect.setVisible(false);
 				btnLocalhost.setVisible(false);
@@ -226,7 +215,7 @@ public class Client {
 						inFromServer.read(planeModelFromServerInByte);
 						modelPlaneLocal = Deserialize
 								.deserializePlaneModel(planeModelFromServerInByte);
-						myPlayerID = modelPlaneLocal.getID();
+						myPlaneID = modelPlaneLocal.getID();
 						break;
 					}
 
@@ -242,7 +231,7 @@ public class Client {
 					// modelPlaneLocal.setID(myPlayerID);
 					// break;
 					// }
-					getFrame().setTitle("Plane shooting gaem | player " + myPlayerID);
+					getFrame().setTitle("Plane shooting gaem | player " + myPlaneID);
 					// label to display when dead
 					lblCenterMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 					lblCenterMessage.setForeground(Color.RED);
@@ -266,6 +255,10 @@ public class Client {
 					getFrame().getContentPane().add(lblNumberOfMissilesLeft);
 //					lblNumberOfMissilesLeft.setVisible(false);
 					
+					lblScore.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+					lblScore.setBounds(0,160,150,30);
+					getFrame().getContentPane().add(lblScore);
+					
 					LoadDataFromServer.loadDataFromServer();
 					MovePlane.movePlane();
 					LaunchMissile.launchMissile();
@@ -275,7 +268,12 @@ public class Client {
 					getFrame().setCursor(Cursor.DEFAULT_CURSOR);
 					displayGameLog("Disable to connect to server: "
 							+ e2.getMessage());
-					return;
+					txtIpHere.setVisible(true);
+					btnConnect.setVisible(true);
+					btnLocalhost.setVisible(true);
+					lblOrInputIp.setVisible(true);
+//					getFrame().setVisible(true);
+//					return;
 				}
 			}
 		});
@@ -327,6 +325,10 @@ public class Client {
 	public static void displayNumberOfMissilesLeft(int i){
 		lblNumberOfMissilesLeft.setText(i+" missiles left");
 		lblNumberOfMissilesLeft.setVisible(true);
+	}
+	public static void displayScore(int i){
+		lblScore.setText("Score: "+i);
+		lblScore.setVisible(true);
 	}
 	public static void displayCenterMessage(String s){
 		lblCenterMessage.setText(s);

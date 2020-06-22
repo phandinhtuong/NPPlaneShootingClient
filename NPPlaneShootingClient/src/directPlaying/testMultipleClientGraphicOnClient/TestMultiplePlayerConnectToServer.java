@@ -83,7 +83,7 @@ public class TestMultiplePlayerConnectToServer {
 	JLabel[][] lblEnemyList = new JLabel[numberOfPlayers][numberOfEnemyPlane];
 
 	// local model to send to server
-	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing");
+	PlaneModel modelPlaneLocal = new PlaneModel(-1, 500, 500, "playing",0);
 	MissileModel modelMissileLocal = new MissileModel(0, 0, 0, 0, "ready");
 	EnemyModel modelEnemyLocal = new EnemyModel(0, 0, 0,0, "ready");
 
@@ -145,7 +145,7 @@ public class TestMultiplePlayerConnectToServer {
 					outToServer = new DataOutputStream(clientSocket.getOutputStream());
 					// Initial all models and label
 					for (int j = 0; j < numberOfPlayers; j++) {
-						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting");
+						modelPlaneList[j] = new PlaneModel(j, 0, 0, "waiting",0);
 						lblPlaneList[j] = new JLabel("");
 						lblPlaneList[j].setIcon(new ImageIcon(planeImage));
 						lblPlaneList[j].setBounds(

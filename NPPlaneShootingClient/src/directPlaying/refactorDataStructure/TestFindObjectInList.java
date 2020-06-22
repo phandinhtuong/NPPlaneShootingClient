@@ -1,16 +1,15 @@
 package directPlaying.refactorDataStructure;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import directPlaying.testOneClient.PlaneModel;
 
 public class TestFindObjectInList {
 	static ArrayList<PlaneModel> modelPlaneList = new ArrayList<PlaneModel>();
 	public static void main(String[] args){
-		PlaneModel planeModel = new PlaneModel(1, 500, 500, "playing");
-		PlaneModel planeModel2 = new PlaneModel(2, 500, 500, "playing");
-		PlaneModel planeModel3 = new PlaneModel(3, 500, 500, "playing");
+		PlaneModel planeModel = new PlaneModel(1, 500, 500, "playing",0);
+		PlaneModel planeModel2 = new PlaneModel(2, 500, 500, "playing",0);
+		PlaneModel planeModel3 = new PlaneModel(3, 500, 500, "playing",0);
 		modelPlaneList.add(planeModel);
 		modelPlaneList.add(planeModel2);
 		modelPlaneList.add(planeModel3);
