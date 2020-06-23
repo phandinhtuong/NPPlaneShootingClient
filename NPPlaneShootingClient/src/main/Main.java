@@ -227,6 +227,7 @@ public class Main {
 					btnConnect.setVisible(true);
 					btnLocalhost.setVisible(true);
 					lblOrInputIp.setVisible(true);
+					
 				}
 			}
 		});
