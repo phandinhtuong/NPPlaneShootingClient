@@ -16,6 +16,11 @@ public class Play {
 		Main.displayNumberOfMissilesLeft(Main.numberOfMissiles);
 		Main.displayLevel(1);
 		Main.displayBigLevel(1);
+		Main.hidePlayerID();
+		Main.displayGameLog("");
+		Main.displayGameLog("");
+		Main.displayGameLog("");
+		Main.displayGameLog("");
 //		Main.displayGameLog("roomID = "+roomID);
 		
 		//TODO load data from server

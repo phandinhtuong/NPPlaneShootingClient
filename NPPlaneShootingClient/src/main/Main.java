@@ -96,10 +96,18 @@ public class Main {
 	public static JLabel lblLevel = new JLabel("Level 1");
 	//display result 
 	public static JLabel lblResult = new JLabel("");
+	// player ID
+	public static JLabel lblPlayerid = new JLabel("");
 	private void initialize() {
 		JFrame frame_1 = new JFrame();
 		setFrame(frame_1);
 		frame_1.getContentPane().setLayout(null);
+		
+		
+		lblPlayerid.setBounds(110, 119, 308, 109);
+		lblPlayerid.setFont(new Font("Times New Roman", Font.BOLD, 50));
+		frame_1.getContentPane().add(lblPlayerid);
+		lblPlayerid.setVisible(false);
 		
 		getFrame().setResizable(false);
 		getFrame().getContentPane().setBackground(Color.WHITE);
@@ -221,6 +229,8 @@ public class Main {
 						myPlaneID = modelPlaneLocal.getID();
 						break;
 					}
+					displayPlayerID(myPlaneID);
+					
 					//set title of the frame
 					getFrame().setTitle("Plane shooting gaem brrrr brrr | player " + myPlaneID);
 					
@@ -281,6 +291,14 @@ public class Main {
 //		lblNumberOfEnemiesLeft.setText(i+" enemies left");
 //		lblNumberOfEnemiesLeft.setVisible(true);
 //	}
+	public static void displayPlayerID(int i){
+		lblPlayerid.setText("Player ID : "+i);
+		lblPlayerid.setVisible(true);
+		
+	}
+	public static void hidePlayerID(){
+		lblPlayerid.setVisible(false);
+	}
 	public static void displayNumberOfMissilesLeft(int i){
 		lblNumberOfMissilesLeft.setText("Bullet: "+i);
 		lblNumberOfMissilesLeft.setVisible(true);
