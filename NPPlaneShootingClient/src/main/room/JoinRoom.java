@@ -81,7 +81,14 @@ public class JoinRoom {
 		btnReady.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				uploadReadyState(roomID);
+				if(btnReady.getText().equals("Ready")){
+					btnReady.setText("Cancel");
+					uploadReadyState(roomID);
+				}else{
+					btnReady.setText("Ready");
+					uploadUnreadyState(roomID);
+				}
+				
 			}
 		});
 		Main.getFrame().setVisible(true);
@@ -203,6 +210,16 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
+	private static void uploadUnreadyState(int roomID){
+		try {
+			Main.outToServer.writeInt(15);
+			Main.outToServer.writeInt(roomID);
+		} catch (IOException e) {
+			Main.displayGameLog(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	
 
 	
