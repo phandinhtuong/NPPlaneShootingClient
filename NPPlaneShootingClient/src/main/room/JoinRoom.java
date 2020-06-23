@@ -36,7 +36,7 @@ public class JoinRoom {
 	public void joinRoom(final int roomID) {
 		Main.getFrame().setVisible(false);
 //		Main.getFrame()
-		uploadPlayerJoinRoomToServer(roomID);
+		
 		btnBack = new JButton("Back");
 		btnBack.setBounds(101, 177, 145, 38);
 		Main.getFrame().getContentPane().add(btnBack);
@@ -173,7 +173,7 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
-	private static void removePlayerFromRoom(int roomID) {
+	public static void removePlayerFromRoom(int roomID) {
 		try {
 			Main.outToServer.writeInt(10);
 			Main.outToServer.writeInt(roomID);
@@ -191,15 +191,7 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
-	private static void uploadPlayerJoinRoomToServer(int roomID) {
-		try {
-			Main.outToServer.writeInt(9);
-			Main.outToServer.writeInt(roomID);
-		} catch (IOException e) {
-			Main.displayGameLog(e.getMessage());
-			e.printStackTrace();
-		}
-	}
+	
 
 	
 }

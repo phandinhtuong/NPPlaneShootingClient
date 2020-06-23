@@ -76,33 +76,26 @@ public class Main {
 	// port of the server is 6789
 	int port = 6789;
 	// number of missiles of each plane
-	static int numberOfMissiles = 400;
+	public static int numberOfMissiles = 400;
 	// this plane's index
 	public static int myPlaneID = -1;
 	// local model to send to server - use this model to move, launch missile
 	public static Player modelPlaneLocal = null;
 	// big center message : game over, you die, ...
-	static JLabel lblCenterMessage = new JLabel("");
-	// display number of enemies left
-	static JLabel lblNumberOfEnemiesLeft = new JLabel("");
+	public static JLabel lblCenterMessage = new JLabel("");
+//	// display number of enemies left
+//	static JLabel lblNumberOfEnemiesLeft = new JLabel("");
 	// display number of missiles left
-	static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles
+	public static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles
 			+ " missiles left");
 	// display score of this plane
-	static JLabel lblScore = new JLabel("Score: 0");
+	public static JLabel lblScore = new JLabel("Score: 0");
 	
 	
 	private void initialize() {
 		JFrame frame_1 = new JFrame();
 		setFrame(frame_1);
 		frame_1.getContentPane().setLayout(null);
-		
-		
-		
-		
-		
-		
-		
 		
 		getFrame().getContentPane().setBackground(Color.WHITE);
 		getFrame().setBounds(0, 0, 930, 992);
@@ -201,18 +194,21 @@ public class Main {
 					//set title of the frame
 					getFrame().setTitle("Plane shooting gaem brrrr brrr | player " + myPlaneID);
 					
-					lblNumberOfEnemiesLeft.setFont(normalFont);
-					lblNumberOfEnemiesLeft.setBounds(0,100,150,30);
-					getFrame().getContentPane().add(lblNumberOfEnemiesLeft);
-					lblNumberOfEnemiesLeft.setVisible(false);
+//					lblNumberOfEnemiesLeft.setFont(normalFont);
+//					lblNumberOfEnemiesLeft.setBounds(0,100,150,30);
+//					getFrame().getContentPane().add(lblNumberOfEnemiesLeft);
+//					lblNumberOfEnemiesLeft.setVisible(false);
 					
 					lblNumberOfMissilesLeft.setFont(normalFont);
 					lblNumberOfMissilesLeft.setBounds(0,130,150,30);
 					getFrame().getContentPane().add(lblNumberOfMissilesLeft);
+					lblNumberOfMissilesLeft.setVisible(false);
 					
 					lblScore.setFont(normalFont);
 					lblScore.setBounds(0,160,150,30);
 					getFrame().getContentPane().add(lblScore);
+					lblScore.setVisible(false);
+					
 					
 					//outside room to create room or join room
 					OutsideRoom outsideRoom = new OutsideRoom();
@@ -247,10 +243,10 @@ public class Main {
 	public static void displayGameLog(String s) {
 		gameLog.setText(gameLog.getText() + s + "\n");
 	}
-	public static void displayNumberOfEnemiesLeft(int i){
-		lblNumberOfEnemiesLeft.setText(i+" enemies left");
-		lblNumberOfEnemiesLeft.setVisible(true);
-	}
+//	public static void displayNumberOfEnemiesLeft(int i){
+//		lblNumberOfEnemiesLeft.setText(i+" enemies left");
+//		lblNumberOfEnemiesLeft.setVisible(true);
+//	}
 	public static void displayNumberOfMissilesLeft(int i){
 		lblNumberOfMissilesLeft.setText(i+" missiles left");
 		lblNumberOfMissilesLeft.setVisible(true);
@@ -261,6 +257,11 @@ public class Main {
 	}
 	public static void displayCenterMessage(String s){
 		lblCenterMessage.setText(s);
-		lblCenterMessage.setVisible(true);
+		if (!lblCenterMessage.isVisible()){
+			lblCenterMessage.setVisible(true);
+		}
+	}
+	public static void hideCenterMessage(){
+		lblCenterMessage.setVisible(false);
 	}
 }

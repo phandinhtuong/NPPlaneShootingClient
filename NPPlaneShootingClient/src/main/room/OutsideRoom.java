@@ -116,15 +116,34 @@ public class OutsideRoom {
 				public void mouseClicked(MouseEvent e) {
 					int roomID = (int) table.getModel().getValueAt(
 							table.getSelectedRow(), 0);
-					Main.getFrame().getContentPane().remove(btnCreateRoom);
-					Main.getFrame().getContentPane().remove(btnRefresh);
-					Main.getFrame().getContentPane().remove(scrollPaneRoomList);
-					JoinRoom joinRoom = new JoinRoom();
-					joinRoom.joinRoom(roomID);
+					if (uploadPlayerJoinRoomToServer(roomID)==1){
+						Main.getFrame().getContentPane().remove(btnCreateRoom);
+						Main.getFrame().getContentPane().remove(btnRefresh);
+						Main.getFrame().getContentPane().remove(scrollPaneRoomList);
+						JoinRoom joinRoom = new JoinRoom();
+						joinRoom.joinRoom(roomID);
+					}else{
+						Main.displayGameLog("The game started! Cannot join room!");
+						loadAllRoomsFromServer();
+					}
+					
+					
 
 				}
 			});
 
 		}
+	}
+	public static int uploadPlayerJoinRoomToServer(int roomID) {
+		try {
+			Main.outToServer.writeInt(9);
+			Main.outToServer.writeInt(roomID);
+			int i = Main.inFromServer.readInt();
+			return i;
+		} catch (IOException e) {
+			Main.displayGameLog(e.getMessage());
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

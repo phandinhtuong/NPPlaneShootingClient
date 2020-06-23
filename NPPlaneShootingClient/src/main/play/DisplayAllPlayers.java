@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 
 import main.Main;
 import model.Player;
-import directPlaying.testOneClient.PlaneModel;
 
 public class DisplayAllPlayers {
 	//image of the plane
@@ -24,10 +23,16 @@ public class DisplayAllPlayers {
 	public static void displayAllPlayers() {
 		//in case the modelPlaneList not null - client could not receive server's package
 		if (modelPlaneList != null) {
+			//mininum player ID to subtract to display plane label in list
+			int min = 100;
 			//dead count is used to know if all players are dead | dead count = plane list size => all dead
 			int deadCount = modelPlaneList.size();
 			//traverse through plane list
 			for (Player planeModelInList : modelPlaneList) {
+				//get mininum player ID
+				if (planeModelInList.getID()<min){
+					min = planeModelInList.getID();
+				}
 				//if this plane is mine
 				if (planeModelInList.getID() == Main.myPlaneID){
 					//set status of my plane
@@ -43,12 +48,12 @@ public class DisplayAllPlayers {
 						Main.displayCenterMessage("You die!");
 					}
 					// if this plane's label is visible
-					if (lblPlaneList.get(planeModelInList.getID()).isVisible()) {
+					if (lblPlaneList.get(planeModelInList.getID()-min).isVisible()) {
 						//display this plane is dead
 						Main.displayGameLog("Player "
 								+ planeModelInList.getID() + " is dead.");
 						//set this plane's label to invisible
-						lblPlaneList.get(planeModelInList.getID()).setVisible(
+						lblPlaneList.get(planeModelInList.getID()-min).setVisible(
 								false);
 					}
 					//if this plane is disconnected and label is visible
@@ -71,11 +76,27 @@ public class DisplayAllPlayers {
 					//dead count - 1
 					deadCount--;
 					//display one player
-					displayOnePlayer(planeModelInList.getID());
+					displayOnePlayer(planeModelInList.getID(),planeModelInList.getID()-min);
 				}
 			}
 			//if all player are dead, display game over
 			if (deadCount == modelPlaneList.size()) {
+//				Main.getFrame().setVisible(false);
+//				if (DisplayAllMissiles.lblMissileList!=null){
+//					for (int i = 0;i<DisplayAllMissiles.lblMissileList.size();i++){
+////						DisplayAllMissiles.removedeadMissileList(i);
+//						DisplayAllMissiles.deadMissileList(i);
+//					}
+//				}
+//				if (DisplayAllEnemies.lblEnemyList!=null){
+//					for (int i = 0;i<DisplayAllEnemies.lblEnemyList.size();i++){
+//						DisplayAllEnemies.removedeadEnemyList(i);
+//					}
+//				}
+//				Main.getFrame().setVisible(true);
+//				Main.getFrame().setVisible(false);
+//				Main.getFrame().getContentPane().remove(comp);
+//				Main.getFrame().setVisible(true);
 				Main.displayCenterMessage("Game Over!");
 			}
 		}
@@ -83,13 +104,13 @@ public class DisplayAllPlayers {
 
 	@SuppressWarnings("deprecation")
 	//display one player
-	public static void displayOnePlayer(int i) {
+	public static void displayOnePlayer(int planeID,int labelID) {
 		// if plane label list size < plane list size, create new plane label
 		if (lblPlaneList.size() < modelPlaneList.size()) {
 			JLabel lblPlane = new JLabel("");
 			lblPlane.setIcon(new ImageIcon(planeImage));
 			lblPlane.setBounds(Main.getFrame().getWidth() / 2 - planeWidth
-					/ 2 * i, Main.getFrame().getHeight() - planeHeight * 2,
+					/ 2 * labelID, Main.getFrame().getHeight() - planeHeight * 2,
 					planeWidth, planeHeight);
 			lblPlane.setVisible(false);
 			//add new plane label to plane label list
@@ -100,12 +121,12 @@ public class DisplayAllPlayers {
 					.add(lblPlaneList.get(lblPlaneList.indexOf(lblPlane)));
 		} else {
 			// else, move the plane label
-			lblPlaneList.get(i).move(
-					modelPlaneList.get(indexOfPlaneWithID(i))
+			lblPlaneList.get(labelID).move(
+					modelPlaneList.get(indexOfPlaneWithID(planeID))
 							.getX(),
-					modelPlaneList.get(indexOfPlaneWithID(i))
+					modelPlaneList.get(indexOfPlaneWithID(planeID))
 							.getY());
-			lblPlaneList.get(i).setVisible(true);
+			lblPlaneList.get(labelID).setVisible(true);
 		}
 	}
 	static public int indexOfPlaneWithID(int ID) {

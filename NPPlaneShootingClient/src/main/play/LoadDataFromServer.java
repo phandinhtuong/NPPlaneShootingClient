@@ -18,6 +18,11 @@ public class LoadDataFromServer {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
+					if (Main.lblCenterMessage.isVisible()){
+						
+						((Timer) evt.getSource()).stop();
+						return;
+					}
 					// check if victory or not
 					// Main.outToServer.writeInt(3);
 					// Main.outToServer.writeInt(roomID);

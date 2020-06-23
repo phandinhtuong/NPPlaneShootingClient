@@ -19,21 +19,28 @@ public class DisplayAllMissiles {
 		static List<Missile> modelMissileList = null;
 	public static void displayAllMissiles() {
 		if (modelMissileList != null) {
-			for (int i = 0; i < modelMissileList.size(); i++) {
-				if (modelMissileList.get(i).getStatus()
-						.equals("launched")) {
-					launchMissileList(i);
-				} else if (modelMissileList.get(i).getStatus()
-						.equals("moving")) {
-					moveMissileList(i);
-				} else if (modelMissileList.get(i).getStatus()
-						.equals("dead")) {
-					deadMissileList(i);
+			if (Main.lblCenterMessage.isVisible()){
+				for (int i = 0; i < modelMissileList.size(); i++) {
+					lblMissileList.get(i).setVisible(false);
+				}
+			}else{
+				for (int i = 0; i < modelMissileList.size(); i++) {
+					if (modelMissileList.get(i).getStatus()
+							.equals("launched")) {
+						launchMissileList(i);
+					} else if (modelMissileList.get(i).getStatus()
+							.equals("moving")) {
+						moveMissileList(i);
+					} else if (modelMissileList.get(i).getStatus()
+							.equals("dead")) {
+						deadMissileList(i);
+					}
+				}
+				for (int j = modelMissileList.size(); j< lblMissileList.size();j++){
+					removedeadMissileList(j);
 				}
 			}
-			for (int j = modelMissileList.size(); j< lblMissileList.size();j++){
-				removedeadMissileList(j);
-			}
+			
 		}
 	}
 

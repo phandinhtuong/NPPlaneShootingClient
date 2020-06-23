@@ -19,7 +19,12 @@ public class DisplayAllEnemies {
 		static List<Enemy> modelEnemyList = null;
 	public static void displayAllEnemies() {
 		if (modelEnemyList != null) {
-			for (int i = 0; i < modelEnemyList.size(); i++) {
+			if (Main.lblCenterMessage.isVisible()){
+				for (int i = 0; i < modelEnemyList.size(); i++) {
+					lblEnemyList.get(i).setVisible(false);
+				}
+			}else {
+				for (int i = 0; i < modelEnemyList.size(); i++) {
 					if (modelEnemyList.get(i).getStatus().equals("created"))
 						createEnemyList(i);
 					else if (modelEnemyList.get(i).getStatus().equals("moving")) {
@@ -33,6 +38,8 @@ public class DisplayAllEnemies {
 			for (int j = modelEnemyList.size(); j < lblEnemyList.size();j++){
 				removedeadEnemyList(j);
 			}
+			}
+			
 		}
 	}
 	public static void createEnemyList(int i){
