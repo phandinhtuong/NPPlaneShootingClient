@@ -1,4 +1,4 @@
-package main.room;
+package roomManagement;
 
 import java.awt.Dimension;
 import java.awt.Font;

@@ -1,4 +1,6 @@
-package main.room;
+package roomManagement;
+
+import gamePlay.Play;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.Timer;
 
 import main.Main;
-import main.play.Play;
 import model.Player;
 import objectByteTransform.Deserialize;
 

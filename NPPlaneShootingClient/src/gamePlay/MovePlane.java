@@ -1,4 +1,4 @@
-package main.play;
+package gamePlay;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;

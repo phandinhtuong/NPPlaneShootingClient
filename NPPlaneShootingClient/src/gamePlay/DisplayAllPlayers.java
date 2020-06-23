@@ -1,4 +1,4 @@
-package main.play;
+package gamePlay;
 
 import java.awt.Image;
 import java.util.ArrayList;

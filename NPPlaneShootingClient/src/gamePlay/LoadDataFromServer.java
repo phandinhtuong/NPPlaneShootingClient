@@ -1,4 +1,4 @@
-package main.play;
+package gamePlay;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
