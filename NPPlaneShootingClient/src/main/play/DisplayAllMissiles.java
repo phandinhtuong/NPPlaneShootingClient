@@ -12,21 +12,22 @@ import model.Missile;
 
 public class DisplayAllMissiles {
 	static JLabel lblMissile = null;
-	final static Image missileImage = new ImageIcon(Main.getFrame()
-			.getClass().getResource("/missile.png")).getImage();
+	final static Image missileImage = new ImageIcon(Main.getFrame().getClass()
+			.getResource("/missile.png")).getImage();
 	static ArrayList<JLabel> lblMissileList = new ArrayList<JLabel>();
 	// model missile list - get from server to display all missiles
-		static List<Missile> modelMissileList = null;
+	static List<Missile> modelMissileList = null;
+
 	public static void displayAllMissiles() {
 		if (modelMissileList != null) {
-			if (Main.lblCenterMessage.isVisible()&&Main.lblCenterMessage.getText().equals("Game Over!")){
+			if (Main.lblCenterMessage.isVisible()
+					&& Main.lblCenterMessage.getText().equals("Game Over!")) {
 				for (int i = 0; i < modelMissileList.size(); i++) {
 					lblMissileList.get(i).setVisible(false);
 				}
-			}else{
+			} else {
 				for (int i = 0; i < modelMissileList.size(); i++) {
-					if (modelMissileList.get(i).getStatus()
-							.equals("launched")) {
+					if (modelMissileList.get(i).getStatus().equals("launched")) {
 						launchMissileList(i);
 					} else if (modelMissileList.get(i).getStatus()
 							.equals("moving")) {
@@ -36,11 +37,11 @@ public class DisplayAllMissiles {
 						deadMissileList(i);
 					}
 				}
-				for (int j = modelMissileList.size(); j< lblMissileList.size();j++){
+				for (int j = modelMissileList.size(); j < lblMissileList.size(); j++) {
 					removedeadMissileList(j);
 				}
 			}
-			
+
 		}
 	}
 
@@ -73,25 +74,16 @@ public class DisplayAllMissiles {
 		if (lblMissileList.size() > i
 				&& lblMissileList.size() >= modelMissileList.size()) {
 			lblMissileList.get(i).setVisible(false);
-//			Client.getFrame().getContentPane().remove(lblMissileList.get(i));
-//			Client.displayGameLog("lblMissileList before: "
-//					+ lblMissileList.size());
-//			lblMissileList.remove(i);
-//			Client.displayGameLog("lblMissileList after: "
-//					+ lblMissileList.size());
 		}
 
 	}
+
 	public static void removedeadMissileList(int i) {
 		if (lblMissileList.size() > i
 				&& lblMissileList.size() >= modelMissileList.size()) {
 			lblMissileList.get(i).setVisible(false);
 			Main.getFrame().getContentPane().remove(lblMissileList.get(i));
-//			Client.displayGameLog("lblMissileList before: "
-//					+ lblMissileList.size());
 			lblMissileList.remove(i);
-//			Client.displayGameLog("lblMissileList after: "
-//					+ lblMissileList.size());
 		}
 
 	}

@@ -31,18 +31,17 @@ public class JoinRoom {
 	public static JTable table;
 	// table header of room list
 	public static String[] tableHeader = { "Player ID", "Status" };
+	//room ID label
 	static JLabel lblRoomID = null;
-	// refresh button to refresh room list from server
-	// static JButton btnRefresh = new JButton("Refresh");
+
 	public void joinRoom(final int roomID) {
 		Main.getFrame().setVisible(false);
-//		Main.getFrame()
-		lblRoomID= new JLabel("Room ID: "+roomID);
+		lblRoomID = new JLabel("Room ID: " + roomID);
 		lblRoomID.setBounds(130, 220, 418, 72);
 		lblRoomID.setFont(new Font("Times New Roman", Font.PLAIN, 40));
 		Main.getFrame().getContentPane().add(lblRoomID);
 		lblRoomID.setVisible(true);
-		
+
 		btnBack = new JButton("Back");
 		btnBack.setBounds(101, 777, 200, 50);
 		btnBack.setFont(new Font("Times New Roman", Font.PLAIN, 30));
@@ -52,10 +51,7 @@ public class JoinRoom {
 		btnBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				// remove player from room
-//				Main.getFrame().getContentPane().remove(btnBack);/
-				
 				Main.getFrame().getContentPane().remove(scrollPanePlayerList);
 				Main.getFrame().getContentPane().remove(btnBack);
 				Main.getFrame().getContentPane().remove(btnReady);
@@ -65,14 +61,13 @@ public class JoinRoom {
 				removePlayerFromRoom(roomID);
 			}
 		});
-		
-		
+
 		// add scroll pane to main frame
 		scrollPanePlayerList.setBounds(5, 286, 900, 383);
 		Main.getFrame().getContentPane().add(scrollPanePlayerList);
 		scrollPanePlayerList.setVisible(false);
 		loadAllPlayersFromServer(roomID);
-		
+
 		btnReady = new JButton("Ready");
 		btnReady.setBounds(350, 777, 200, 50);
 		btnReady.setFont(new Font("Times New Roman", Font.PLAIN, 30));
@@ -81,14 +76,14 @@ public class JoinRoom {
 		btnReady.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(btnReady.getText().equals("Ready")){
+				if (btnReady.getText().equals("Ready")) {
 					btnReady.setText("Cancel");
 					uploadReadyState(roomID);
-				}else{
+				} else {
 					btnReady.setText("Ready");
 					uploadUnreadyState(roomID);
 				}
-				
+
 			}
 		});
 		Main.getFrame().setVisible(true);
@@ -96,11 +91,12 @@ public class JoinRoom {
 
 	private static void loadAllPlayersFromServer(final int roomID) {
 		int delay = 500;
-		// load data every 100 milliseconds
+		// load data every 500 milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			int i = 0;
 			int thisPlaneStillInThisRoom = 0;
 			int numberOfPlayersReady = 0;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -122,40 +118,45 @@ public class JoinRoom {
 				if (playerListFromServer.size() == 0) {
 					((Timer) e.getSource()).stop();
 					return;
-					// Main.displayGameLog("0");
 				} else {
 					Object[][] tableData = new Object[playerListFromServer
 							.size()][5];
 					// display all rooms from server
 					for (int i = 0; i < playerListFromServer.size(); i++) {
-						
+
 						tableData[i][0] = playerListFromServer.get(i).getID();
 						tableData[i][1] = playerListFromServer.get(i)
 								.getStatus();
-						if (playerListFromServer.get(i).getID()== Main.myPlaneID){
-							thisPlaneStillInThisRoom=1;
+						if (playerListFromServer.get(i).getID() == Main.myPlaneID) {
+							thisPlaneStillInThisRoom = 1;
 						}
-						if(playerListFromServer.get(i).getStatus().equals("ready")||playerListFromServer.get(i).getStatus().equals("playing")){
+						if (playerListFromServer.get(i).getStatus()
+								.equals("ready")
+								|| playerListFromServer.get(i).getStatus()
+										.equals("playing")) {
 							numberOfPlayersReady++;
 						}
 
-					}if (thisPlaneStillInThisRoom != 1){
+					}
+					if (thisPlaneStillInThisRoom != 1) {
 						((Timer) e.getSource()).stop();
 						return;
 					}
-					thisPlaneStillInThisRoom=0;
-					
-					//if all player ready, the ready button turn into start game
-					if(numberOfPlayersReady ==playerListFromServer.size()){
+					thisPlaneStillInThisRoom = 0;
+
+					// if all player ready, the ready button turn into start
+					// game
+					if (numberOfPlayersReady == playerListFromServer.size()) {
 						Main.getFrame().getContentPane().remove(btnBack);
 						Main.getFrame().getContentPane().remove(btnReady);
-						Main.getFrame().getContentPane().remove(scrollPanePlayerList);
+						Main.getFrame().getContentPane()
+								.remove(scrollPanePlayerList);
 						Main.getFrame().getContentPane().remove(lblRoomID);
 						startGame(roomID);
 						((Timer) e.getSource()).stop();
 						return;
-					}else{
-						numberOfPlayersReady=0;
+					} else {
+						numberOfPlayersReady = 0;
 					}
 
 					// load data to table and display
@@ -169,29 +170,23 @@ public class JoinRoom {
 					scrollPanePlayerList.setViewportView(table);
 					scrollPanePlayerList.setVisible(true);
 
-					// if (table.getSelectedRow()!=-1){
-					// Main.displayGameLog(table.getSelectedRow()+"");
-					// }
-
 				}
 			}
-
 		};
 		new Timer(delay, taskPerformer).start();
-
 	}
-	private static void startGame(int roomID){
+
+	private static void startGame(int roomID) {
 		try {
 			Main.outToServer.writeInt(13);
 			Main.outToServer.writeInt(roomID);
-//			Play play = new Play();
-//			play.play(roomID);
 			Play.play(roomID);
 		} catch (IOException e) {
 			Main.displayGameLog(e.getMessage());
 			e.printStackTrace();
 		}
 	}
+
 	public static void removePlayerFromRoom(int roomID) {
 		try {
 			Main.outToServer.writeInt(10);
@@ -201,7 +196,8 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
-	private static void uploadReadyState(int roomID){
+
+	private static void uploadReadyState(int roomID) {
 		try {
 			Main.outToServer.writeInt(12);
 			Main.outToServer.writeInt(roomID);
@@ -210,7 +206,8 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
-	private static void uploadUnreadyState(int roomID){
+
+	private static void uploadUnreadyState(int roomID) {
 		try {
 			Main.outToServer.writeInt(15);
 			Main.outToServer.writeInt(roomID);
@@ -219,8 +216,5 @@ public class JoinRoom {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
-	
 }

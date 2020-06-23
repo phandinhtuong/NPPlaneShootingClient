@@ -18,27 +18,12 @@ public class LoadDataFromServer {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					if (Main.lblCenterMessage.isVisible()&&Main.lblCenterMessage.getText().equals("Game Over!")){
-						
+					if (Main.lblCenterMessage.isVisible()
+							&& Main.lblCenterMessage.getText().equals(
+									"Game Over!")) {
 						((Timer) evt.getSource()).stop();
 						return;
 					}
-					// check if victory or not
-					// Main.outToServer.writeInt(3);
-					// Main.outToServer.writeInt(roomID);
-					// while((i = Main.inFromServer.readInt()) != 0){
-					// // Client.displayGameLog(i+"");
-					// if (i==-1){
-					// // Client.displayGameLog("0 enemies left.");
-					// Main.displayNumberOfEnemiesLeft(0);
-					// Main.displayCenterMessage("Victory!");
-					// }else {
-					// // Client.displayGameLog(i+" enemies left.");
-					// Main.displayNumberOfEnemiesLeft(i);
-					// }
-					// break;
-					// }
-					// load all players
 					Main.outToServer.writeInt(4);
 					Main.outToServer.writeInt(roomID);
 					while ((i = Main.inFromServer.readInt()) != 0) {
@@ -68,7 +53,6 @@ public class LoadDataFromServer {
 								.deserializeEnemyModelArrayList(enemyModelListInByte);
 						break;
 					}
-					// Client.displayGameLog(Client.modelMissileList.g);
 					DisplayAllPlayers.displayAllPlayers();
 					DisplayAllMissiles.displayAllMissiles();
 					DisplayAllEnemies.displayAllEnemies();

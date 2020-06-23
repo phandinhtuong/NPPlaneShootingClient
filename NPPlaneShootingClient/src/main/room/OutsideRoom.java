@@ -28,8 +28,7 @@ public class OutsideRoom {
 	// table room list
 	public static JTable table;
 	// table header of room list
-	public static String[] tableHeader = { "Room ID", 
-			"#Players", "Status" };
+	public static String[] tableHeader = { "Room ID", "#Players", "Status" };
 	// refresh button to refresh room list from server
 	static JButton btnRefresh = null;
 
@@ -54,7 +53,6 @@ public class OutsideRoom {
 		scrollPaneRoomList.setBounds(5, 286, 900, 383);
 		Main.getFrame().getContentPane().add(scrollPaneRoomList);
 		scrollPaneRoomList.setVisible(false);
-		
 
 		btnCreateRoom = new JButton("Create Room");
 		btnCreateRoom.setBounds(101, 777, 200, 50);
@@ -87,74 +85,66 @@ public class OutsideRoom {
 				Main.inFromServer.read(roomListFromServerInByte);
 				roomListFromServer = Deserialize
 						.deserializeRoomModelArrayList(roomListFromServerInByte);
-				i=0;
+				i = 0;
 				break;
-				
+
 			}
-//			if (roomListFromServer.size()!=0){
-				Object[][] tableData = new Object[roomListFromServer.size()][5];
-				// display all rooms from server
-				for (int j = 0; j < roomListFromServer.size(); j++) {
-					tableData[j][0] = roomListFromServer.get(j).getRoomID();
-					tableData[j][1] = roomListFromServer.get(j)
-							.getPlayerListInRoom().size();
-					tableData[j][2] = roomListFromServer.get(j).getStatus();
-				}
-				
-				lblRoomlist.setBounds(130, 220, 418, 72);
-				lblRoomlist.setFont(new Font("Times New Roman", Font.PLAIN, 40));
-				Main.getFrame().getContentPane().add(lblRoomlist);
-				lblRoomlist.setVisible(true);
-				
-				
-				// load data to table and display
-				table = new JTable(tableData, tableHeader);
-				table.getTableHeader().setFont(
-						new Font("Times New Roman", Font.PLAIN, 30));
-				table.getTableHeader().setPreferredSize(new Dimension(10, 40));
-				table.setRowHeight(30);
-				table.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-				scrollPaneRoomList.setViewportView(table);
-				scrollPaneRoomList.setVisible(true);
+			// if (roomListFromServer.size()!=0){
+			Object[][] tableData = new Object[roomListFromServer.size()][5];
+			// display all rooms from server
+			for (int j = 0; j < roomListFromServer.size(); j++) {
+				tableData[j][0] = roomListFromServer.get(j).getRoomID();
+				tableData[j][1] = roomListFromServer.get(j)
+						.getPlayerListInRoom().size();
+				tableData[j][2] = roomListFromServer.get(j).getStatus();
+			}
 
-				table.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						int roomID = (int) table.getModel().getValueAt(
-								table.getSelectedRow(), 0);
-						int res = uploadPlayerJoinRoomToServer(roomID);
-						if (res==1){
-							Main.getFrame().getContentPane().remove(btnCreateRoom);
-							Main.getFrame().getContentPane().remove(btnRefresh);
-							Main.getFrame().getContentPane().remove(scrollPaneRoomList);
-//							lblRoomlist.setVisible(aFlag);
-							Main.getFrame().getContentPane().remove(lblRoomlist);
-							JoinRoom joinRoom = new JoinRoom();
-							joinRoom.joinRoom(roomID);
-						}else if (res==0){
-							Main.displayGameLog("The game started! Cannot join room!");
-							loadAllRoomsFromServer();
-						}
-						else if (res==2){
-							Main.displayGameLog("The room does not exist anymore!");
-							loadAllRoomsFromServer();
-						}
-						
-						
+			lblRoomlist.setBounds(130, 220, 418, 72);
+			lblRoomlist.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+			Main.getFrame().getContentPane().add(lblRoomlist);
+			lblRoomlist.setVisible(true);
 
+			// load data to table and display
+			table = new JTable(tableData, tableHeader);
+			table.getTableHeader().setFont(
+					new Font("Times New Roman", Font.PLAIN, 30));
+			table.getTableHeader().setPreferredSize(new Dimension(10, 40));
+			table.setRowHeight(30);
+			table.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+			scrollPaneRoomList.setViewportView(table);
+			scrollPaneRoomList.setVisible(true);
+
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					int roomID = (int) table.getModel().getValueAt(
+							table.getSelectedRow(), 0);
+					int res = uploadPlayerJoinRoomToServer(roomID);
+					if (res == 1) {
+						Main.getFrame().getContentPane().remove(btnCreateRoom);
+						Main.getFrame().getContentPane().remove(btnRefresh);
+						Main.getFrame().getContentPane()
+								.remove(scrollPaneRoomList);
+						// lblRoomlist.setVisible(aFlag);
+						Main.getFrame().getContentPane().remove(lblRoomlist);
+						JoinRoom joinRoom = new JoinRoom();
+						joinRoom.joinRoom(roomID);
+					} else if (res == 0) {
+						Main.displayGameLog("The game started! Cannot join room!");
+						loadAllRoomsFromServer();
+					} else if (res == 2) {
+						Main.displayGameLog("The room does not exist anymore!");
+						loadAllRoomsFromServer();
 					}
-				});
-//			}else{
-//				Main.displayGameLog("null");
-//			}
-			
+
+				}
+			});
 		} catch (IOException e2) {
 			Main.displayGameLog(e2.getMessage());
 			e2.printStackTrace();
 		}
-			
 
-		
 	}
+
 	public static int uploadPlayerJoinRoomToServer(int roomID) {
 		try {
 			Main.outToServer.writeInt(9);
