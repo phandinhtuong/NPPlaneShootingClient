@@ -16,23 +16,22 @@ public class DisplayAllPlayers {
 			.getResource("/plane1.png")).getImage();
 	static int planeWidth = 86;
 	static int planeHeight = 84;
+	static JLabel lblPlane = null;
 	//array list of label to display planes
 	static ArrayList<JLabel> lblPlaneList = new ArrayList<JLabel>();
 	// model plane list - get from server to display all planes
 		static List<Player> modelPlaneList = null;
+//	private static int lblPlane;
 	public static void displayAllPlayers() {
 		//in case the modelPlaneList not null - client could not receive server's package
 		if (modelPlaneList != null) {
 			//mininum player ID to subtract to display plane label in list
-			int min = 100;
+			
 			//dead count is used to know if all players are dead | dead count = plane list size => all dead
 			int deadCount = modelPlaneList.size();
 			//traverse through plane list
 			for (Player planeModelInList : modelPlaneList) {
-				//get mininum player ID
-				if (planeModelInList.getID()<min){
-					min = planeModelInList.getID();
-				}
+				
 				//if this plane is mine
 				if (planeModelInList.getID() == Main.myPlaneID){
 					//set status of my plane
@@ -48,12 +47,12 @@ public class DisplayAllPlayers {
 						Main.displayCenterMessage("You die!");
 					}
 					// if this plane's label is visible
-					if (lblPlaneList.get(planeModelInList.getID()-min).isVisible()) {
+					if (lblPlaneList.get(planeModelInList.getID()).isVisible()) {
 						//display this plane is dead
 						Main.displayGameLog("Player "
 								+ planeModelInList.getID() + " is dead.");
 						//set this plane's label to invisible
-						lblPlaneList.get(planeModelInList.getID()-min).setVisible(
+						lblPlaneList.get(planeModelInList.getID()).setVisible(
 								false);
 					}
 					//if this plane is disconnected and label is visible
@@ -76,8 +75,9 @@ public class DisplayAllPlayers {
 					//dead count - 1
 					deadCount--;
 					//display one player
-					displayOnePlayer(planeModelInList.getID(),planeModelInList.getID()-min);
+					displayOnePlayer(planeModelInList.getID());
 				}
+				
 			}
 			//if all player are dead, display game over
 			if (deadCount == modelPlaneList.size()) {
@@ -97,36 +97,47 @@ public class DisplayAllPlayers {
 //				Main.getFrame().setVisible(false);
 //				Main.getFrame().getContentPane().remove(comp);
 //				Main.getFrame().setVisible(true);
+				
 				Main.displayCenterMessage("Game Over!");
+				String s = "<html>";
+				for(int i = 0;i<modelPlaneList.size();i++){
+//					modelPlaneList.get(i).getID();
+//					modelPlaneList.get(i).getScore();
+					s=s+"Player "+modelPlaneList.get(i).getID()+"'s score = "+modelPlaneList.get(i).getScore()+" <br/>";
+				}
+				s=s+"</html>";
+				Main.displayResult(s);
 			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	//display one player
-	public static void displayOnePlayer(int planeID,int labelID) {
+	public static void displayOnePlayer(int planeID) {
 		// if plane label list size < plane list size, create new plane label
-		if (lblPlaneList.size() < modelPlaneList.size()) {
-			JLabel lblPlane = new JLabel("");
+		if (planeID >= lblPlaneList.size()) {
+			lblPlane = new JLabel("");
 			lblPlane.setIcon(new ImageIcon(planeImage));
 			lblPlane.setBounds(Main.getFrame().getWidth() / 2 - planeWidth
-					/ 2 * labelID, Main.getFrame().getHeight() - planeHeight * 2,
+					/ 2 * planeID, Main.getFrame().getHeight() - planeHeight * 2,
 					planeWidth, planeHeight);
 			lblPlane.setVisible(false);
 			//add new plane label to plane label list
 			lblPlaneList.add(lblPlane);
-			lblPlaneList.get(lblPlaneList.indexOf(lblPlane)).setVisible(true);
+			lblPlaneList.get(lblPlaneList.indexOf(lblPlane)).setVisible(false);
 			//add new plane label to client frame
 			Main.getFrame().getContentPane()
 					.add(lblPlaneList.get(lblPlaneList.indexOf(lblPlane)));
+			
 		} else {
 			// else, move the plane label
-			lblPlaneList.get(labelID).move(
+//			Main.displayGameLog("lblPlaneList.size() "+lblPlaneList.size());
+			lblPlaneList.get(planeID).move(
 					modelPlaneList.get(indexOfPlaneWithID(planeID))
 							.getX(),
 					modelPlaneList.get(indexOfPlaneWithID(planeID))
 							.getY());
-			lblPlaneList.get(labelID).setVisible(true);
+			lblPlaneList.get(planeID).setVisible(true);
 		}
 	}
 	static public int indexOfPlaneWithID(int ID) {

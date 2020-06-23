@@ -18,7 +18,7 @@ public class LoadDataFromServer {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					if (Main.lblCenterMessage.isVisible()){
+					if (Main.lblCenterMessage.isVisible()&&Main.lblCenterMessage.getText().equals("Game Over!")){
 						
 						((Timer) evt.getSource()).stop();
 						return;

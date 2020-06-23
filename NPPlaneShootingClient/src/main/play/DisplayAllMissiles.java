@@ -19,7 +19,7 @@ public class DisplayAllMissiles {
 		static List<Missile> modelMissileList = null;
 	public static void displayAllMissiles() {
 		if (modelMissileList != null) {
-			if (Main.lblCenterMessage.isVisible()){
+			if (Main.lblCenterMessage.isVisible()&&Main.lblCenterMessage.getText().equals("Game Over!")){
 				for (int i = 0; i < modelMissileList.size(); i++) {
 					lblMissileList.get(i).setVisible(false);
 				}

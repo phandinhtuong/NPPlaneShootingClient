@@ -17,9 +17,16 @@ public class DisplayAllEnemies {
 	static ArrayList<JLabel> lblEnemyList = new ArrayList<JLabel>();
 	// model enemy list - get from server to display all enemies
 		static List<Enemy> modelEnemyList = null;
+		static int level = 0;
 	public static void displayAllEnemies() {
 		if (modelEnemyList != null) {
-			if (Main.lblCenterMessage.isVisible()){
+			if (modelEnemyList.size() == 0){
+				Main.displayBigLevel(level+1);
+				Main.displayLevel(level+1);
+			}else{
+				Main.hideBigLevel();
+			}
+			if (Main.lblCenterMessage.isVisible()&&Main.lblCenterMessage.getText().equals("Game Over!")){
 				for (int i = 0; i < modelEnemyList.size(); i++) {
 					lblEnemyList.get(i).setVisible(false);
 				}
@@ -43,6 +50,12 @@ public class DisplayAllEnemies {
 		}
 	}
 	public static void createEnemyList(int i){
+//		if ()
+//		Main.displayGameLog("enemy id = "+modelEnemyList.get(i).getID());
+		level = ((modelEnemyList.get(i).getID() / 10) -1)/2 +1;
+		Main.displayLevel(level);
+//		Main.displayGameLog("id = " +modelEnemyList.get(i).getID());
+//		Main.hideBigLevel();
 		if (lblEnemyList.size()<modelEnemyList.size()){
 			lblEnemy = new JLabel("");
 			lblEnemy.setIcon(new ImageIcon(enemyImage));
@@ -53,9 +66,11 @@ public class DisplayAllEnemies {
 			Main.getFrame().getContentPane().add(lblEnemyList.get(lblEnemyList.indexOf(lblEnemy)));
 			
 		}
+//		Main.displayBigLevel(level);
 	}
 	@SuppressWarnings("deprecation")
 	public static void moveEnemyList(int i){
+//		
 		if (lblEnemyList.size() > i){
 			lblEnemyList.get(i).move(modelEnemyList.get(i).getX(), modelEnemyList.get(i).getY());
 			lblEnemyList.get(i).setVisible(true);
@@ -72,6 +87,7 @@ public class DisplayAllEnemies {
 		}
 	}
 	public static void removedeadEnemyList(int i){
+		
 		if (lblEnemyList.size() > i && lblEnemyList.size() >= modelEnemyList.size()){
 			lblEnemyList.get(i).setVisible(false);
 			Main.getFrame().getContentPane().remove(lblEnemyList.get(i));

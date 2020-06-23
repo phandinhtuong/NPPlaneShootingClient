@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,8 +62,8 @@ public class Main {
 	static JTextArea gameLog = new JTextArea("");
 
 	// font for display normal text
-	Font normalFont = new Font("Times New Roman", Font.PLAIN, 20);
-
+	Font normalFont = new Font("Times New Roman", Font.PLAIN, 30);
+	Font gamelogFont = new Font("Times New Roman", Font.PLAIN, 20);
 	// text field to input IP address of server
 	private JTextField txtIpHere;
 	// button connect to local host
@@ -76,27 +77,31 @@ public class Main {
 	// port of the server is 6789
 	int port = 6789;
 	// number of missiles of each plane
-	public static int numberOfMissiles = 400;
+	public static int numberOfMissiles = 500;
 	// this plane's index
 	public static int myPlaneID = -1;
 	// local model to send to server - use this model to move, launch missile
 	public static Player modelPlaneLocal = null;
 	// big center message : game over, you die, ...
 	public static JLabel lblCenterMessage = new JLabel("");
+	//big level notification
+	public static JLabel lblBigLevel = new JLabel("");
 //	// display number of enemies left
 //	static JLabel lblNumberOfEnemiesLeft = new JLabel("");
 	// display number of missiles left
-	public static JLabel lblNumberOfMissilesLeft = new JLabel(numberOfMissiles
-			+ " missiles left");
+	public static JLabel lblNumberOfMissilesLeft = new JLabel("Bullet: "+numberOfMissiles);
 	// display score of this plane
 	public static JLabel lblScore = new JLabel("Score: 0");
-	
-	
+	//display level of the game
+	public static JLabel lblLevel = new JLabel("Level 1");
+	//display result 
+	public static JLabel lblResult = new JLabel("");
 	private void initialize() {
 		JFrame frame_1 = new JFrame();
 		setFrame(frame_1);
 		frame_1.getContentPane().setLayout(null);
 		
+		getFrame().setResizable(false);
 		getFrame().getContentPane().setBackground(Color.WHITE);
 		getFrame().setBounds(0, 0, 930, 992);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,20 +110,21 @@ public class Main {
 		gameLog.setOpaque(false);
 		gameLog.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		gameLog.setEditable(false);
-		gameLog.setFont(normalFont);
+		gameLog.setFont(gamelogFont);
 
 		// scroll pane to display game log
 		JScrollPane scrollPaneGameLog = new JScrollPane();
+		scrollPaneGameLog.setBorder(BorderFactory.createEmptyBorder());
 		scrollPaneGameLog.setViewportView(gameLog);
-		scrollPaneGameLog.setBounds(0, 0, 900, 100);
+		scrollPaneGameLog.setBounds(0, 0, 1200, 100);
 		scrollPaneGameLog.getViewport().setOpaque(false);
 		scrollPaneGameLog.setOpaque(false);
 		getFrame().getContentPane().add(scrollPaneGameLog);
-		// TODO scroll pane have no more bound
 
 		txtIpHere = new JTextField();
 		txtIpHere.setText("");
-		txtIpHere.setBounds(242, 189, 200, 26);
+		txtIpHere.setBounds(144, 500, 300, 50);
+		txtIpHere.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		getFrame().getContentPane().add(txtIpHere);
 		txtIpHere.setColumns(10);
 
@@ -129,15 +135,37 @@ public class Main {
 		lblCenterMessage
 				.setFont(new Font("Times New Roman", Font.BOLD, 99));
 		lblCenterMessage.setBounds(getFrame().getWidth() / 2 - 300,
-				getFrame().getHeight() / 2 - 100, 600, 200);
+				getFrame().getHeight() / 2 - 400, 600, 200);
 		getFrame().getContentPane().add(lblCenterMessage);
 
 		lblCenterMessage.setVisible(false);
 		
 		
+		lblResult.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblResult.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblResult.setHorizontalAlignment(SwingConstants.CENTER);
+		lblResult.setFont(new Font("Times New Roman", Font.BOLD, 50));
+		lblResult.setBounds(10,100, 800, 900);
+		getFrame().getContentPane().add(lblResult);
+		
+		lblResult.setVisible(false);
+		
+		
+		
+		lblBigLevel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblBigLevel.setForeground(Color.RED);
+		lblCenterMessage.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblCenterMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBigLevel.setFont(new Font("Times New Roman", Font.BOLD, 80));
+		lblBigLevel.setBounds(360 ,360, 600, 200);
+		getFrame().getContentPane().add(lblBigLevel);
+		lblCenterMessage.setVisible(false);
+		
+		
+		
 		// connect to local host or input IP address of server
 		final JButton btnConnect = new JButton("Connect");
-		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server:");
+		final JLabel lblOrInputIp = new JLabel("Or input IP address of Server and click Connect:");
 
 		btnLocalhost = new JButton("Connect to localhost");
 		btnLocalhost.addMouseListener(new MouseAdapter() {
@@ -148,14 +176,16 @@ public class Main {
 				// btnConnect.mou
 			}
 		});
-		btnLocalhost.setBounds(314, 102, 209, 29);
+		btnLocalhost.setBounds(290, 302, 300, 50);
+		btnLocalhost.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		getFrame().getContentPane().add(btnLocalhost);
 
-		btnConnect.setBounds(450, 188, 115, 29);
+		btnConnect.setBounds(450, 500, 300, 50);
+		btnConnect.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		getFrame().getContentPane().add(btnConnect);
 		
-		lblOrInputIp.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblOrInputIp.setBounds(305, 147, 228, 26);
+		lblOrInputIp.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		lblOrInputIp.setBounds(175, 400, 700, 50);
 		getFrame().getContentPane().add(lblOrInputIp);
 		
 		btnConnect.addActionListener(new ActionListener() {
@@ -200,15 +230,19 @@ public class Main {
 //					lblNumberOfEnemiesLeft.setVisible(false);
 					
 					lblNumberOfMissilesLeft.setFont(normalFont);
-					lblNumberOfMissilesLeft.setBounds(0,130,150,30);
+					lblNumberOfMissilesLeft.setBounds(790,0,150,50);
 					getFrame().getContentPane().add(lblNumberOfMissilesLeft);
 					lblNumberOfMissilesLeft.setVisible(false);
 					
 					lblScore.setFont(normalFont);
-					lblScore.setBounds(0,160,150,30);
+					lblScore.setBounds(790,40,150,50);
 					getFrame().getContentPane().add(lblScore);
 					lblScore.setVisible(false);
 					
+					lblLevel.setFont(normalFont);
+					lblLevel.setBounds(790,80,150,50);
+					getFrame().getContentPane().add(lblLevel);
+					lblLevel.setVisible(false);
 					
 					//outside room to create room or join room
 					OutsideRoom outsideRoom = new OutsideRoom();
@@ -248,12 +282,16 @@ public class Main {
 //		lblNumberOfEnemiesLeft.setVisible(true);
 //	}
 	public static void displayNumberOfMissilesLeft(int i){
-		lblNumberOfMissilesLeft.setText(i+" missiles left");
+		lblNumberOfMissilesLeft.setText("Bullet: "+i);
 		lblNumberOfMissilesLeft.setVisible(true);
 	}
 	public static void displayScore(int i){
 		lblScore.setText("Score: "+i);
 		lblScore.setVisible(true);
+	}
+	public static void displayLevel(int i){
+		lblLevel.setText("Level "+i);
+		lblLevel.setVisible(true);
 	}
 	public static void displayCenterMessage(String s){
 		lblCenterMessage.setText(s);
@@ -261,7 +299,18 @@ public class Main {
 			lblCenterMessage.setVisible(true);
 		}
 	}
+	public static void displayResult(String s){
+		lblResult.setText(s);
+		lblResult.setVisible(true);
+	}
 	public static void hideCenterMessage(){
 		lblCenterMessage.setVisible(false);
+	}
+	public static void displayBigLevel(int i){
+		lblBigLevel.setText("Level "+i);
+		lblBigLevel.setVisible(true);
+	}
+	public static void hideBigLevel(){
+		lblBigLevel.setVisible(false);
 	}
 }

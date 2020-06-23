@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
@@ -30,15 +31,21 @@ public class JoinRoom {
 	public static JTable table;
 	// table header of room list
 	public static String[] tableHeader = { "Player ID", "Status" };
-
+	static JLabel lblRoomID = null;
 	// refresh button to refresh room list from server
 	// static JButton btnRefresh = new JButton("Refresh");
 	public void joinRoom(final int roomID) {
 		Main.getFrame().setVisible(false);
 //		Main.getFrame()
+		lblRoomID= new JLabel("Room ID: "+roomID);
+		lblRoomID.setBounds(130, 220, 418, 72);
+		lblRoomID.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+		Main.getFrame().getContentPane().add(lblRoomID);
+		lblRoomID.setVisible(true);
 		
 		btnBack = new JButton("Back");
-		btnBack.setBounds(101, 177, 145, 38);
+		btnBack.setBounds(101, 777, 200, 50);
+		btnBack.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		Main.getFrame().getContentPane().add(btnBack);
 		// display create room button
 		btnBack.setVisible(true);
@@ -48,12 +55,14 @@ public class JoinRoom {
 				
 				// remove player from room
 //				Main.getFrame().getContentPane().remove(btnBack);/
-				removePlayerFromRoom(roomID);
+				
 				Main.getFrame().getContentPane().remove(scrollPanePlayerList);
 				Main.getFrame().getContentPane().remove(btnBack);
 				Main.getFrame().getContentPane().remove(btnReady);
+				Main.getFrame().getContentPane().remove(lblRoomID);
 				OutsideRoom outsideRoom = new OutsideRoom();
 				outsideRoom.outsideRoom();
+				removePlayerFromRoom(roomID);
 			}
 		});
 		
@@ -65,7 +74,8 @@ public class JoinRoom {
 		loadAllPlayersFromServer(roomID);
 		
 		btnReady = new JButton("Ready");
-		btnReady.setBounds(250, 177, 145, 38);
+		btnReady.setBounds(350, 777, 200, 50);
+		btnReady.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		Main.getFrame().getContentPane().add(btnReady);
 		btnReady.setVisible(true);
 		btnReady.addActionListener(new ActionListener() {
@@ -78,7 +88,7 @@ public class JoinRoom {
 	}
 
 	private static void loadAllPlayersFromServer(final int roomID) {
-		int delay = 50;
+		int delay = 500;
 		// load data every 100 milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			int i = 0;
@@ -133,6 +143,7 @@ public class JoinRoom {
 						Main.getFrame().getContentPane().remove(btnBack);
 						Main.getFrame().getContentPane().remove(btnReady);
 						Main.getFrame().getContentPane().remove(scrollPanePlayerList);
+						Main.getFrame().getContentPane().remove(lblRoomID);
 						startGame(roomID);
 						((Timer) e.getSource()).stop();
 						return;
@@ -145,7 +156,7 @@ public class JoinRoom {
 					table.getTableHeader().setFont(
 							new Font("Times New Roman", Font.PLAIN, 30));
 					table.getTableHeader().setPreferredSize(
-							new Dimension(10, 30));
+							new Dimension(10, 40));
 					table.setRowHeight(30);
 					table.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 					scrollPanePlayerList.setViewportView(table);
@@ -166,8 +177,9 @@ public class JoinRoom {
 		try {
 			Main.outToServer.writeInt(13);
 			Main.outToServer.writeInt(roomID);
-			Play play = new Play();
-			play.play(roomID);
+//			Play play = new Play();
+//			play.play(roomID);
+			Play.play(roomID);
 		} catch (IOException e) {
 			Main.displayGameLog(e.getMessage());
 			e.printStackTrace();
